@@ -1,0 +1,26 @@
+{
+  "name": "js-modular-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "node index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@slynova/flydrive": "^1.0.3",
+    "awilix": "^6.0.0",
+    "cors": "^2.8.5",
+    "cuid": "^2.1.8",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "glob": "^7.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "validator": "^13.7.0",
+    "winston": "^3.3.3"
+  }
+}
