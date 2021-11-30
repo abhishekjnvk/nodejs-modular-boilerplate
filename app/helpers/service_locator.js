@@ -31,8 +31,29 @@ ServiceLocator.prototype.register = function () {
         },
       }
     )
+
+    // Load Modules
+      this.container
+      .loadModules(
+        [
+          path.join(__dirname,'../service/*service.js'), 
+        ],
+        {
+          formatName      : 'camelCase',
+          resolverOptions : {
+            lifetime : Lifetime.SINGLETON,
+            register : asClass,
+          },
+        }
+      )
     .register({
         fs : asValue(require('fs')),
+      })
+    .register({
+      uniqueIdGenerator : asValue(require('./unique_id_generator')),
+    })
+      .register({
+        mongoose : asValue(require('mongoose')),
       })
       .register({
         logger : asValue(require('./logger')),
@@ -46,6 +67,8 @@ ServiceLocator.prototype.register = function () {
       .register({
         config : asValue(require('../../config')),
       })
+
+      // console.log(this.container.registrations)
 };
 
 ServiceLocator.prototype.get = function (dependencyName) {
