@@ -4,7 +4,7 @@ const logger = serviceLocator.get('logger');
 
 const AppListener = {
   startServer : ({ message }) => {
-    logger.info(message, '12', 12, 'hello')
+    logger.info(message)
   }
 }
 

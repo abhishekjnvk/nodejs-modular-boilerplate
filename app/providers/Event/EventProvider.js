@@ -54,9 +54,8 @@ class Event{
       const method = depPath[1];
 
       const dependencyPath = path.resolve(__dirname, this._listenersDir, dependencyName)
-      console.log(dependencyPath)
 
-      return require(`${this._listenersDir}/${dependencyName}`)[method];
+      return require(dependencyPath)[method];
     } catch (error) {
       throw new Error(`Can not resolve Listener ${listener}`);
     }
