@@ -26,8 +26,6 @@ ServiceLocator.prototype.register = function () {
       },
     },
   );
-
-  // Load Modules
   this.container
     .loadModules([path.join(__dirname, '../service/*service.js')], {
       formatName      : 'camelCase',
@@ -46,9 +44,6 @@ ServiceLocator.prototype.register = function () {
       mongoose : asValue(require('mongoose')),
     })
     .register({
-      logger : asValue(require('./logger')),
-    })
-    .register({
       storage_manager : asValue(require('./storage_manager')),
     })
     .register({
@@ -59,6 +54,15 @@ ServiceLocator.prototype.register = function () {
     })
     .register({
       config : asValue(require('../../config')),
+    })
+
+    // Load Providers
+    .loadModules(['./app/providers/*/index.js'], {
+      formatName      : (_, descriptor) => (descriptor.value.name||"").toLowerCase(),
+      resolverOptions : {
+        lifetime : Lifetime.SINGLETON,
+        register : asClass,
+      },
     });
 
   // console.log(this.container.registrations)

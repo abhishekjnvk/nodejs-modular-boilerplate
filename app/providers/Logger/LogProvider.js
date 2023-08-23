@@ -102,13 +102,12 @@ class Logger{
   }
 
   async debug(...message) {
-    this.logger.debug(...message);
+    this.logger.debug(message);
   }
 
   async error(...message) {
-    this.logger.error(...message);
+    this.logger.error(message);
   }
 }
 
-const logger = new Logger();
-module.exports = logger;
+module.exports = Logger;
