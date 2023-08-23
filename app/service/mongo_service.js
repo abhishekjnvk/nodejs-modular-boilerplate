@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 'use strict';
 
 /**
@@ -15,7 +14,7 @@ class MongoService{
     this.name = 'Mongo Service:';
     this.log = opts.logger;
     this.modelNameToIdPrefix = {
-      Home                 : 'HO',
+      Home : 'HO',
     };
   }
 
@@ -214,16 +213,16 @@ class MongoService{
    * Get documents by query
    * @param modelName mongoose model's name to query data from
    * @param query mongo query to execute
-   * @param group_key Key for group by
+   * @param groupKey Key for group by
    * @returns resulting object from query
    * @error NotFoundError
    */
-  async getCountByGroup(modelName, query, group_key) {
+  async getCountByGroup(modelName, query, groupKey) {
     // initialise model
     const model = this.getModelInstance(modelName);
     const result = await model.aggregate([
       { $match: query },
-      { $group: { _id: group_key, count: { $sum: 1 } } },
+      { $group: { _id: groupKey, count: { $sum: 1 } } },
     ]);
     if (!result) {
       const err = this.errs(
@@ -241,12 +240,12 @@ class MongoService{
    * Get sum of a keys-value for grouped docs by another key
    * @param modelName mongoose model's name to query data from
    * @param query mongo query to execute
-   * @param group_key Key for group by
-   * @param sum_key Key for group by
+   * @param groupKey Key for group by
+   * @param sumKey Key for group by
    * @returns resulting object from query
    * @error NotFoundError
    */
-  async getSumByGroup(modelName, query, sum_key, group_key, unwind) {
+  async getSumByGroup(modelName, query, sumKey, groupKey, unwind) {
     // initialise model
     const model = this.getModelInstance(modelName);
     let result;
@@ -254,12 +253,12 @@ class MongoService{
       result = await model.aggregate([
         { $match: query },
         { $unwind: unwind },
-        { $group: { _id: group_key, sum: { $sum: sum_key } } },
+        { $group: { _id: groupKey, sum: { $sum: sumKey } } },
       ]);
     } else {
       result = await model.aggregate([
         { $match: query },
-        { $group: { _id: group_key, sum: { $sum: sum_key } } },
+        { $group: { _id: groupKey, sum: { $sum: sumKey } } },
       ]);
     }
     if (!result) {
@@ -293,7 +292,7 @@ class MongoService{
       throw err;
     }
     // initialise model
-    let textSearchQuery = { $text: { $search: text } };
+    const textSearchQuery = { $text: { $search: text } };
     const model = this.getModelInstance(modelName);
     const result = await model
       .find(
@@ -326,14 +325,13 @@ class MongoService{
    */
   async create(modelName, newObject, skipUId = false) {
     const model = this.getModelInstance(modelName);
-    let newObjectInstance = new model(newObject); 
+    let newObjectInstance = new model(newObject);
 
     if (!skipUId) {
       newObjectInstance._id = await this.uIdGen.getId(
         this.modelNameToIdPrefix[modelName]
       );
     }
-    console.log(newObjectInstance);
 
     newObjectInstance = await newObjectInstance.save();
     this.log.info(`${this.name} ${modelName} created successfully`);
@@ -498,7 +496,7 @@ class MongoService{
 
       let counter = 0;
 
-      for (let obj of newObjects) {
+      for (const obj of newObjects) {
         obj._id = uIds[counter++];
       }
     }
@@ -637,9 +635,7 @@ class MongoService{
   async aggregate(modelName, aggregationPipe = []) {
     // initialise model
     const model = this.getModelInstance(modelName);
-    let result;
-
-    result = await model.aggregate(aggregationPipe);
+    const result = await model.aggregate(aggregationPipe);
 
     if (!result) {
       const err = this.errs(
@@ -829,7 +825,7 @@ class MongoService{
 
       return doc;
     }
-    if (!newObject) newObject = query;
+    if (!newObject) {newObject = query;}
 
     const newDoc = await this.create(modelName, newObject, skipUId);
 

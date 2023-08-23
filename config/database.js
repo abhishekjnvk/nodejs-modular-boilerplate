@@ -1,13 +1,10 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
-/* eslint-disable security/detect-non-literal-require */
 'use strict';
 
 const { listModules } = require('awilix');
 const serviceLocator = require('../app/helpers/service_locator');
 const logger = serviceLocator.get('logger');
 const path = require('path');
-
-const models = listModules(path.join(__dirname,'../app/module/*/*.model.js'));
+const models = listModules(path.join(__dirname, '../app/module/*/*.model.js'));
 
 
 class Database{
@@ -15,18 +12,21 @@ class Database{
     this.mongoose = serviceLocator.get('mongoose');
   }
 
-  async _connect(connection_string) {
-
+  async _connect(port, host, name, opts, replSet = '') {
     return new Promise((resolve, reject) => {
-      this.mongoose.connect(connection_string,{
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-      }
-    );
+      this.mongoose.Promise = global.Promise;
+      this.mongoose.set('strictQuery', false)
 
+      if (replSet) {
+        const hostArrStr = host;
+        const hostURI=`mongodb://${hostArrStr}/${name}?replicaSet=${replSet}&readPreference=primary&appname=pp_server&ssl=false`
+        this.mongoose.connect(hostURI, opts);
+      } else {
+        const hostURI=`mongodb://${host}:${port}/${name}?readPreference=primary&appname=pp_server&ssl=false`
+        this.mongoose.connect(hostURI, opts);
+      }
 
       const { connection } = this.mongoose;
-
       connection.on('connected', () => {
         logger.info('Database Connection was Successful');
 
@@ -53,8 +53,8 @@ class Database{
         process.exit(0);
       });
 
-
       models.forEach(model => {
+        // eslint-disable-next-line security/detect-non-literal-require
         require(model.path);
       });
     });

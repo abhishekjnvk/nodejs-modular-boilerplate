@@ -7,14 +7,15 @@ class BaseController{
     this.service = opts[serviceName];
     this.name = name;
   }
+
   async home(req, res, next) {
     try {
-      let version = (req.originalUrl).split('/')[1]
-      let req_id=req.req_id;
-      this.logger.info(req_id+' home controller '+version);
-      version = version.substring(1, version.length)+".0.0";
-      let response = await this.service.home(version,req_id);
-      response={...response,req_id}
+      let version = req.originalUrl.split('/')[1];
+      const reqId = req.req_id;
+      this.logger.info(`${reqId} home controller ${version}`);
+      version = `${version.substring(1, version.length)}.0.0`;
+      let response = await this.service.home(version, reqId);
+      response = { ...response, req_id: reqId };
       res.send(response);
       res.end();
     } catch (err) {

@@ -64,16 +64,16 @@ class DatabaseService{
     });
   }
 
-  async getCountByGroup(modelName, query, group_key) {
-    return await this.dbService.getCountByGroup(modelName, query, group_key);
+  async getCountByGroup(modelName, query, groupKey) {
+    return await this.dbService.getCountByGroup(modelName, query, groupKey);
   }
 
-  async getSumByGroup(modelName, query, sum_key, group_key, unwind) {
+  async getSumByGroup(modelName, query, sumKey, groupKey, unwind) {
     return await this.dbService.getSumByGroup(
       modelName,
       query,
-      sum_key,
-      group_key,
+      sumKey,
+      groupKey,
       unwind
     );
   }

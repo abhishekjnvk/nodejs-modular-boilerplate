@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const service_locator=require('../../../helpers/service_locator');
+const serviceLocator=require('../../../helpers/service_locator');
 
 
-router.get('/', function (req, res, next) {
-    service_locator.get('homeControllerV2').home(req,res,next);
+router.get('/', (req, res, next) => {
+  serviceLocator.get('homeControllerV2').home(req, res, next);
 })
 
 

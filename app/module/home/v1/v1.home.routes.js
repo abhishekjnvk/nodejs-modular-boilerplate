@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const service_locator=require('../../../helpers/service_locator');
+const serviceLocator=require('../../../helpers/service_locator');
 
-router.get('/', function (req, res, next) {
-    service_locator.get('logger').info(req.req_id+' home Route v1');
-    service_locator.get('homeControllerV1').home(req,res,next);
+router.get('/', (req, res, next) => {
+  serviceLocator.get('logger').info(`${req.req_id} home Route v1`);
+  serviceLocator.get('homeControllerV1').home(req, res, next);
 })
 
 
