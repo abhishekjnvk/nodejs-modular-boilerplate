@@ -2,6 +2,7 @@
 module.exports = function(app, serviceLocator) {
   const logger = serviceLocator.get('logger')
   setTimeout(() => {
+    logger.info("Registered error handler")
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
       // handle 500 errors

@@ -81,6 +81,7 @@ class Logger{
           log : obj => {
             const newObj = Object.assign({}, obj);
             newObj['req_id'] = httpContext.get('req_id');
+            newObj['timestamp'] = Date.now();
 
             return newObj;
           },
