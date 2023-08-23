@@ -8,7 +8,7 @@ class BaseService{
   }
 
   async home(version, requestId) {
-    const { disk }=this.storage_manager;
+    const { disk } = this.storage_manager;
     try {
       this.logger.info(`${requestId} BaseService home() ${version} called`);
       await this.databaseService.create(this.modelName, { request_id: requestId, version });
