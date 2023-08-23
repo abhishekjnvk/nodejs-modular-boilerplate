@@ -2,6 +2,10 @@
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const httpContext = require('express-http-context');
+const compression = require('compression');
+const useragent = require('express-useragent');
+
+
 
 const serviceLocator = require('../helpers/service_locator');
 const uniqueReqId = serviceLocator.get('uniqueReqId');
@@ -17,11 +21,12 @@ const allowedOrigins = [
 
 module.exports = function(app) {
   app.use(httpContext.middleware);
-
+  app.use(useragent.express());
   app.use(uniqueReqId);
   app.disable('x-powered-by');
   app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
   app.use(bodyParser.json());
+  app.use(compression());
 
   app.use(cors({
     origin(origin, callback) {
