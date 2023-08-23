@@ -1,8 +1,9 @@
 module.exports = {
-  APP_NAME  : process.env.APP_NAME || 'My App',
-  APP_EMAIL : process.env.APP_EMAIL || 'bot@sample_app.com',
-  APP_URL   : process.env.APP_URL || 'http://localhost:8080',
-  APP_LOGO  :
+  APP_NAME    : process.env.APP_NAME || 'My App',
+  APP_VERSION : process.env.APP_VERSION || '1.0.0',
+  APP_EMAIL   : process.env.APP_EMAIL || 'bot@sample_app.com',
+  APP_URL     : process.env.APP_URL || 'http://localhost:8080',
+  APP_LOGO    :
     process.env.APP_LOGO ||
     'https://previews.123rf.com/images/aquir/aquir1311/aquir131100316/23569861-sample-grunge-red-round-stamp.jpg',
   APP_TIMEZONE           : process.env.APP_TIMEZONE || 'Asia/Kolkata',

@@ -1,25 +1,23 @@
 // Handle All Errors
-module.exports = function(app) {
-
-  // wait for all routes to be registered
+module.exports = function(app, serviceLocator) {
+  const logger = serviceLocator.get('logger')
   setTimeout(() => {
-    // handle 500 errors
-    app.use((err, req, res) => {
-      res.status(500).send({
-        status  : 500,
-        message : 'Internal Server Error',
-        error   : err.message
-      });
-    });
+    logger.info("Registered error handler")
+    // eslint-disable-next-line no-unused-vars
+    app.use((err, req, res, next) => {
+      // handle 500 errors
+      logger.error(`Error: ${err}`)
+      res.status(500).send({ error: 'Something failed!' })
+    })
 
-    // handle 404 Erorrs
-    app.all("*", (req, res) => {
+    app.all("*", (_, res) => {
+      logger.error('Error 404');
       res.status(404).send({
-        status  : 500,
-        message : 'Internal Server Error',
+        status  : 404,
+        message : 'Not Found',
       });
-    });
+    })
 
-  }, 2000);
+  }, 2000);  // wait for all routes to be registered
 
 }
