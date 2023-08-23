@@ -1,6 +1,7 @@
 
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const httpContext = require('express-http-context');
 
 const serviceLocator = require('../helpers/service_locator');
 const uniqueReqId = serviceLocator.get('uniqueReqId');
@@ -15,6 +16,7 @@ const allowedOrigins = [
 ]
 
 module.exports = function(app) {
+  app.use(httpContext.middleware);
 
   app.use(uniqueReqId);
   app.disable('x-powered-by');

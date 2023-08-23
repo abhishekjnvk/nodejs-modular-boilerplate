@@ -11,11 +11,9 @@ class BaseController{
   async home(req, res, next) {
     try {
       let version = req.originalUrl.split('/')[1];
-      const reqId = req.req_id;
-      this.logger.info(`${reqId} home controller ${version}`);
-      version = `${version.substring(1, version.length)}.0.0`;
-      let response = await this.service.home(version, reqId);
-      response = { ...response, req_id: reqId };
+      this.logger.info(`home controller ${version}`);
+      version = `${(version.substring(1, version.length))}`;
+      const response = await this.service.home(version);
       res.send(response);
       res.end();
     } catch (err) {

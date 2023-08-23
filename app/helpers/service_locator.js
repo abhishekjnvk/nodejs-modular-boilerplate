@@ -55,6 +55,9 @@ ServiceLocator.prototype.register = function () {
       uniqueReqId : asValue(require('./unique_req_id')),
     })
     .register({
+      httpContext : asValue(require('express-http-context')),
+    })
+    .register({
       config : asValue(require('../../config')),
     });
 

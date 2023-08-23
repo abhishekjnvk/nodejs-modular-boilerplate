@@ -4,11 +4,8 @@ const pino = require('pino');
 const httpContext = require('express-http-context');
 const dateFns = require('date-fns');
 
-
 class Logger{
   constructor() {
-    // this.config = new Config();
-    // this.helpers = new Helpers();
     const options = {
       singleLine : true,
       mkdir      : true,
@@ -21,7 +18,7 @@ class Logger{
         target  : 'pino/file',
         options : {
           ...options,
-          destination : 'logs/info.log'
+          destination : 'logs/info.log',
         },
       },
       {
@@ -29,7 +26,7 @@ class Logger{
         target  : 'pino/file',
         options : {
           ...options,
-          destination : 'logs/debug.log'
+          destination : 'logs/debug.log',
         },
       },
       {
@@ -37,7 +34,7 @@ class Logger{
         target  : 'pino/file',
         options : {
           ...options,
-          destination : 'logs/warn.log'
+          destination : 'logs/warn.log',
         },
       },
       {
@@ -45,23 +42,23 @@ class Logger{
         target  : 'pino/file',
         options : {
           ...options,
-          destination : 'logs/error.log'
+          destination : 'logs/error.log',
         },
       },
     ];
 
-    // if (this.config.get('logger.console')) {
-    targets.push({
-      target  : 'pino-pretty',
-      options : {
-        colorize     : true,
-        timestampKey : 'time',
-        singleLine   : true,
-        hideObject   : false,
-        ignore       : 'hostname',
-      },
-    });
-    // }
+    if (process.env.ENABLE_CONSOLE_OUTPUT) {
+      targets.push({
+        target  : 'pino-pretty',
+        options : {
+          colorize     : true,
+          timestampKey : 'time',
+          singleLine   : true,
+          hideObject   : false,
+          ignore       : 'hostname',
+        },
+      });
+    }
 
     this.logger = pino(
       {
@@ -91,7 +88,7 @@ class Logger{
       },
       pino.transport({
         targets,
-      })
+      }),
     );
   }
 
@@ -112,7 +109,5 @@ class Logger{
   }
 }
 
-
-const logger  = new Logger();
+const logger = new Logger();
 module.exports = logger;
-
