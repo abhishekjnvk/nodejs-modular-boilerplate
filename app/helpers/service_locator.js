@@ -1,4 +1,4 @@
-const { asClass, asValue, Lifetime, createContainer } = require('awilix');
+const { asClass, asValue, Lifetime, createContainer, listModules } = require('awilix');
 const path = require('path');
 const { camelCase } = require('lodash');
 
@@ -57,15 +57,21 @@ ServiceLocator.prototype.register = function () {
     })
 
     // Load Providers
-    .loadModules(['./app/providers/*/index.js'], {
-      formatName      : (_, descriptor) => (descriptor.value.name||"").toLowerCase(),
+    .loadModules([path.join(__dirname, '../providers/*/index.js')], {
+      formatName      : (_, descriptor) => camelCase(descriptor.value.name||""),
       resolverOptions : {
         lifetime : Lifetime.SINGLETON,
         register : asClass,
       },
     });
 
-  // console.log(this.container.registrations)
+  const modules = listModules([path.join(__dirname, '../module/*/*constants.js')]);
+  for (const module of modules) {
+    const name = camelCase(module.name);
+    this.container.register({
+      [name] : asValue(require(module.path)),
+    });
+  }
 };
 
 ServiceLocator.prototype.get = function (dependencyName) {

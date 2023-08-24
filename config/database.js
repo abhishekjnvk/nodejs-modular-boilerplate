@@ -17,7 +17,6 @@ class Database{
       this.mongoose.Promise = global.Promise;
       this.mongoose.set('strictQuery', false);
 
-      console.log('connecting');
       if (replSet) {
         const hostArrStr = host;
         const hostURI = `mongodb://${hostArrStr}/${name}?replicaSet=${replSet}&readPreference=primary&appname=pp_server&ssl=false`;
