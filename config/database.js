@@ -15,14 +15,15 @@ class Database{
   async _connect(port, host, name, opts, replSet = '') {
     return new Promise((resolve, reject) => {
       this.mongoose.Promise = global.Promise;
-      this.mongoose.set('strictQuery', false)
+      this.mongoose.set('strictQuery', false);
 
+      console.log('connecting');
       if (replSet) {
         const hostArrStr = host;
-        const hostURI=`mongodb://${hostArrStr}/${name}?replicaSet=${replSet}&readPreference=primary&appname=pp_server&ssl=false`
+        const hostURI = `mongodb://${hostArrStr}/${name}?replicaSet=${replSet}&readPreference=primary&appname=pp_server&ssl=false`;
         this.mongoose.connect(hostURI, opts);
       } else {
-        const hostURI=`mongodb://${host}:${port}/${name}?readPreference=primary&appname=pp_server&ssl=false`
+        const hostURI = `mongodb://${host}:${port}/${name}?readPreference=primary&appname=pp_server&ssl=false`;
         this.mongoose.connect(hostURI, opts);
       }
 
@@ -40,13 +41,13 @@ class Database{
       });
 
       connection.on('disconnected', () =>
-        logger.info('Database Connection Disconnected')
+        logger.info('Database Connection Disconnected'),
       );
 
       process.on('SIGINT', () => {
         connection.close();
         logger.info(
-          'Database Connection closed due to NodeJs process termination'
+          'Database Connection closed due to NodeJs process termination',
         );
 
         // eslint-disable-next-line no-process-exit
