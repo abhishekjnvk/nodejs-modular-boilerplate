@@ -24,9 +24,8 @@ module.exports = function (app) {
               routers[version] = router;
             }
 
-            app.use(`/${version}/${module}`, router);
-            logger.info(`Loading module /${version}/${module}`)
-
+            app.use(`/${version}`, router);
+            // logger.info(`Loading module /${version}/${module}`)
             glob(
               `${path.join(__dirname, '../module', module, version)}/*.routes.js`,
               (err, roteFiles) => {

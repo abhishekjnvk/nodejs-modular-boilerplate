@@ -62,8 +62,6 @@ class Logger{
 
     this.logger = pino(
       {
-        timestamp : () =>
-          `,"time":"${dateFns.format(Date.now(), 'dd-MMM-yyyy HH:mm:ss sss')}"`,
         level : process.env.LOG_LEVEL || 'info',
         hooks : {
           logMethod(inputArgs, method) {
@@ -81,7 +79,6 @@ class Logger{
           log : obj => {
             const newObj = Object.assign({}, obj);
             newObj['req_id'] = httpContext.get('req_id');
-            newObj['timestamp'] = Date.now();
 
             return newObj;
           },
@@ -102,11 +99,11 @@ class Logger{
   }
 
   async debug(...message) {
-    this.logger.debug(message);
+    this.logger.debug(...message);
   }
 
   async error(...message) {
-    this.logger.error(message);
+    this.logger.error(...message);
   }
 }
 
