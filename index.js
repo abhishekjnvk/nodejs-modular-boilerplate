@@ -7,10 +7,11 @@ const event = serviceLocator.get('event')
 const PORT= process.env.PORT || 8080
 const Database = require('./config/database');
 const config = require('./config/app_config');
+const router = express.Router();
 
 require('./app/base/events');
 require("./app/base/middleware")(app)
-require("./app/base/routes")(app)
+require("./app/base/routes")(app, router)
 require("./app/base/handler")(app, serviceLocator)
 
 const startServer = async () => {

@@ -44,7 +44,10 @@ ServiceLocator.prototype.register = function () {
       mongoose : asValue(require('mongoose')),
     })
     .register({
-      storage_manager : asValue(require('./storage_manager')),
+      httpStatus : asValue(require('http-status')),
+    })
+    .register({
+      storageManager : asValue(require('./storage_manager')),
     })
     .register({
       uniqueReqId : asValue(require('./unique_req_id')),
@@ -53,12 +56,21 @@ ServiceLocator.prototype.register = function () {
       httpContext : asValue(require('express-http-context')),
     })
     .register({
+      path : asValue(require('path')),
+    })
+    .register({
+      express : asValue(require('express')),
+    })
+    .register({
+      glob : asValue(require('glob')),
+    })
+    .register({
       config : asValue(require('../../config')),
     })
 
     // Load Providers
     .loadModules([path.join(__dirname, '../providers/*/index.js')], {
-      formatName      : (_, descriptor) => camelCase(descriptor.value.name||""),
+      formatName      : (_, descriptor) => camelCase(descriptor.value.name),
       resolverOptions : {
         lifetime : Lifetime.SINGLETON,
         register : asClass,

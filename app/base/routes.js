@@ -1,28 +1,44 @@
-const glob = require('glob')
-const path= require('path')
-
-const { promises: { readdir } } = require('fs')
+const serviceLocator = require('../helpers/service_locator');
+const path = serviceLocator.get('path')
+const logger = serviceLocator.get('logger')
+const { promises: { readdir } } = serviceLocator.get('fs')
+const glob = serviceLocator.get('glob')
+const express = serviceLocator.get('express')
+const routers = {};
 
 const getDirectories = async source =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
+    .map(dirent => dirent.name);
 
-// register routes of all modules
-module.exports = function(app) {
-  getDirectories(path.join(__dirname, '../module')).then(async files => {
-    files.map(async file => {
-      getDirectories(path.join(__dirname, '../module', file)).then(async files2 => {
-        files2.map(async file2 => {
-          // registering routes of all versions
-          glob(`${path.join(__dirname, '../module', file, file2)}/*.routes.js`, (err, roteFiles) => {
-            roteFiles.map(routeFile => {
-              // eslint-disable-next-line security/detect-non-literal-require
-              app.use(`/${file2}`, require(routeFile))
-            })
+module.exports = function (app) {
+  getDirectories(path.join(__dirname, '../module')).then(async modules => {
+
+    modules.map(async module => {
+      getDirectories(path.join(__dirname, '../module', module)).then(
+        async versions => {
+          versions.map(async version => {
+            let router = routers[version];
+            if (!router) {
+              router = express.Router();
+              routers[version] = router;
+            }
+
+            app.use(`/${version}/${module}`, router);
+            logger.info(`Loading module /${version}/${module}`)
+
+            glob(
+              `${path.join(__dirname, '../module', module, version)}/*.routes.js`,
+              (err, roteFiles) => {
+                roteFiles.map(routeFile => {
+                  require(routeFile).routes(router, serviceLocator)
+                });
+              },
+            );
+
           });
-        })
-      })
-    })
-  })
-}
+        },
+      );
+    });
+  });
+};

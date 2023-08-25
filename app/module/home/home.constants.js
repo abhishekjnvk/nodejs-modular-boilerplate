@@ -1,3 +1,3 @@
-module.exports={
-  SAMPLE_CONSTANT : "Hello, world"
-}
+module.exports = {
+  SAMPLE_CONSTANT : 'Hello, world',
+};

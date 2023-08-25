@@ -3,13 +3,13 @@ class BaseService{
     this.logger = opts.logger;
     this.modelName = modelName;
     this.config = opts.config;
-    this.storage_manager = opts.storage_manager;
+    this.storageManager = opts.storageManager;
     this.databaseService = opts.databaseService;
     this.httpContext = opts.httpContext;
   }
 
   async home(version) {
-    const { disk } = this.storage_manager;
+    const { disk } = this.storageManager;
     try {
       this.logger.info(`BaseService home() ${version} called`);
       const requestId = this.httpContext.get('req_id');
