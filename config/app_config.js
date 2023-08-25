@@ -2,7 +2,10 @@ module.exports = {
   APP_NAME    : process.env.APP_NAME || 'My App',
   APP_VERSION : process.env.APP_VERSION || '1.0.0',
   APP_EMAIL   : process.env.APP_EMAIL || 'bot@sample_app.com',
-  APP_URL     : process.env.APP_URL || 'http://localhost:8080',
+  API_HOST    : process.env.API_HOST || 'http://localhost:8080',
+  SALT_ROUNDS : process.env.SALT_ROUNDS || 10,
+  JWT_SECRET  : process.env.JWT_SECRET || "hakuna-matata",
+  JWT_EXPIRY  : 24 * 60 * 60 * 1000 * 30, // 30 Days (milliseconds)
   APP_LOGO    :
     process.env.APP_LOGO ||
     'https://previews.123rf.com/images/aquir/aquir1311/aquir131100316/23569861-sample-grunge-red-round-stamp.jpg',

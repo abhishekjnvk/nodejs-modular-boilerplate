@@ -4,8 +4,8 @@ const cors = require('cors');
 const httpContext = require('express-http-context');
 const compression = require('compression');
 const useragent = require('express-useragent');
-
-
+const { errors } = require('celebrate');
+const express = require('express');
 
 const serviceLocator = require('../helpers/service_locator');
 const uniqueReqId = serviceLocator.get('uniqueReqId');
@@ -23,9 +23,13 @@ module.exports = function(app) {
   app.use(httpContext.middleware);
   app.use(useragent.express());
   app.use(uniqueReqId);
+  app.use(errors());
   app.disable('x-powered-by');
-  app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
-  app.use(bodyParser.json());
+
+  app.use(express.urlencoded({ extended: false }));
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
+
   app.use(compression());
 
   app.use(cors({

@@ -47,7 +47,13 @@ ServiceLocator.prototype.register = function () {
       httpStatus : asValue(require('http-status')),
     })
     .register({
+      httpErrors : asValue(require('http-errors')),
+    })
+    .register({
       storageManager : asValue(require('./storage_manager')),
+    })
+    .register({
+      utils : asValue(require('./utils')),
     })
     .register({
       uniqueReqId : asValue(require('./unique_req_id')),

@@ -2,7 +2,6 @@
 
 const pino = require('pino');
 const httpContext = require('express-http-context');
-const dateFns = require('date-fns');
 
 class Logger{
   constructor() {
