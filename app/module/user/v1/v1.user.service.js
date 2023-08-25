@@ -36,8 +36,10 @@ class UserServiceV1 extends BaseService{
       name,
     };
     const result = await _.__create(newUser);
+    const userData = _.normalizeData(result);
+    const token = await _.utils.signToken(userData);
 
-    return result;
+    return _.parseResponseData(userData, token);
   }
 
   async login(body) {

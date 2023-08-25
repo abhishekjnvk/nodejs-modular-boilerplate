@@ -56,6 +56,9 @@ ServiceLocator.prototype.register = function () {
       utils : asValue(require('./utils')),
     })
     .register({
+      constants : asValue(require('../base/constants')),
+    })
+    .register({
       uniqueReqId : asValue(require('./unique-req-id')),
     })
     .register({

@@ -39,23 +39,25 @@ function handleCelebrateError(err) {
 module.exports = function(app, serviceLocator) {
   const logger = serviceLocator.get('logger');
   const httpStatus = serviceLocator.get('httpStatus');
+  const httpContext = serviceLocator.get('httpContext')
+  const constants = serviceLocator.get('constants')
 
   setTimeout(() => {
     logger.info("Registered error handler")
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
       err = handleCelebrateError(err);
-      if(err.statusCode) {
-        res.status(err.statusCode).json({
-          code  : err.statusCode,
-          error : err.message
-        });
-      }else{
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
-          code  : httpStatus.INTERNAL_SERVER_ERROR,
-          error : 'Something failed!'
-        })
-      }
+      const code = err.statusCode || 500
+      const message = err.message || "Something went wrong";
+      const requestId = httpContext.get(constants.REQUEST_ID_KEY);
+      const sessionId = httpContext.get(constants.SESSION_ID_KEY);
+      res.status(code).json({
+        status     : false,
+        code       : String(code),
+        message,
+        request_id : requestId,
+        session_id : sessionId
+      });
     })
 
     app.all("*", (_, res) => {
@@ -65,13 +67,5 @@ module.exports = function(app, serviceLocator) {
         message : 'Not Found',
       });
     })
-
-  }, 2000);  // wait for all routes to be registered
-  // app.on('NotFound', (req, res) => {
-  //   this.logger.error(`${req.path()} Method not Implemented`);
-  //   res.send(
-  //     404,
-  //     new Error('Method not Implemented', 'METHOD_NOT_IMPLEMENTED')
-  //   );
-  // });
+  }, 2000);
 }

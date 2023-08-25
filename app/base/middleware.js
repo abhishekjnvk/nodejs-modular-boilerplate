@@ -6,6 +6,7 @@ const compression = require('compression');
 const useragent = require('express-useragent');
 const { errors } = require('celebrate');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const serviceLocator = require('../helpers/service-locator');
 const uniqueReqId = serviceLocator.get('uniqueReqId');
@@ -21,6 +22,7 @@ const allowedOrigins = [
 
 module.exports = function(app) {
   app.use(httpContext.middleware);
+  app.use(cookieParser());
   app.use(useragent.express());
   app.use(uniqueReqId);
   app.use(errors());

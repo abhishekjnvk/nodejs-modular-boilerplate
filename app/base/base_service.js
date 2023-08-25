@@ -9,16 +9,20 @@ class BaseService{
     this.storageManager = opts.storageManager;
     this.databaseService = opts.databaseService;
     this.httpContext = opts.httpContext;
+    this.constants = opts.constants;
   }
 
   async parseResponseData(data = {}, token = '') {
 
-    const reqId = this.httpContext.get('req_id');
+    const reqId = this.httpContext.get(this.constants.REQUEST_ID_KEY);
+    const sessionId = this.httpContext.get(this.constants.SESSION_ID_KEY);
+
     const result = {
-      status : true,
+      status     : true,
       data,
       token,
-      req_id : reqId,
+      request_id : reqId,
+      session_id : sessionId
     };
     this.logger.info("parsed response data")
 
@@ -26,22 +30,19 @@ class BaseService{
   }
 
   async home(version) {
-    const { disk } = this.storageManager;
     try {
       this.logger.info(`BaseService home() ${version} called`);
-      const requestId = this.httpContext.get('req_id');
+      const requestId = this.httpContext.get(this.constants.REQUEST_ID_KEY);
       await this.databaseService.create(this.modelName, {
         request_id : requestId,
         version,
       });
 
-      return {
+      return this.parseResponseData({
         app_version : this.config.app.APP_VERSION,
         api_version : version,
         message     : 'Welcome to the home page',
-        request_id  : requestId,
-        files       : await disk.flatList(),
-      };
+      });
     } catch (err) {
       this.logger.error(`BaseService home error: ${err}`);
       throw err;

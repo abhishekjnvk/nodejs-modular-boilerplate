@@ -2,6 +2,7 @@
 
 const pino = require('pino');
 const httpContext = require('express-http-context');
+const { REQUEST_ID_KEY, REQUEST_PATH_KEY, REQUEST_METHOD_KEY, SESSION_ID_KEY } = require('../../base/constants');
 
 class Logger{
   constructor() {
@@ -77,7 +78,10 @@ class Logger{
         formatters : {
           log : obj => {
             const newObj = Object.assign({}, obj);
-            newObj['req_id'] = httpContext.get('req_id');
+            newObj[REQUEST_ID_KEY] = httpContext.get(REQUEST_ID_KEY);
+            newObj[SESSION_ID_KEY] = httpContext.get(SESSION_ID_KEY);
+            newObj[REQUEST_PATH_KEY] = httpContext.get(REQUEST_PATH_KEY);
+            newObj[REQUEST_METHOD_KEY] = httpContext.get(REQUEST_METHOD_KEY);
 
             return newObj;
           },
