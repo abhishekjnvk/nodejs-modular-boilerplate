@@ -1,5 +1,5 @@
 'use strict';
-const serviceLocator = require('../helpers/service_locator');
+const serviceLocator = require('../helpers/service-locator');
 const logger = serviceLocator.get('logger');
 
 const AppListener = {

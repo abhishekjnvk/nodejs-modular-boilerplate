@@ -36,7 +36,7 @@ class BaseService{
       });
 
       return {
-        app_version : this.config.app_config.APP_VERSION,
+        app_version : this.config.app.APP_VERSION,
         api_version : version,
         message     : 'Welcome to the home page',
         request_id  : requestId,

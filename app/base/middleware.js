@@ -7,7 +7,7 @@ const useragent = require('express-useragent');
 const { errors } = require('celebrate');
 const express = require('express');
 
-const serviceLocator = require('../helpers/service_locator');
+const serviceLocator = require('../helpers/service-locator');
 const uniqueReqId = serviceLocator.get('uniqueReqId');
 
 // Allowed API Versions

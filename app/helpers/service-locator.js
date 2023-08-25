@@ -38,7 +38,7 @@ ServiceLocator.prototype.register = function () {
       fs : asValue(require('fs')),
     })
     .register({
-      uniqueIdGenerator : asValue(require('./unique_id_generator')),
+      uniqueIdGenerator : asValue(require('./unique-id-generator')),
     })
     .register({
       mongoose : asValue(require('mongoose')),
@@ -50,13 +50,13 @@ ServiceLocator.prototype.register = function () {
       httpErrors : asValue(require('http-errors')),
     })
     .register({
-      storageManager : asValue(require('./storage_manager')),
+      storageManager : asValue(require('./storage-manager')),
     })
     .register({
       utils : asValue(require('./utils')),
     })
     .register({
-      uniqueReqId : asValue(require('./unique_req_id')),
+      uniqueReqId : asValue(require('./unique-req-id')),
     })
     .register({
       httpContext : asValue(require('express-http-context')),

@@ -1,5 +1,5 @@
 'use strict';
-const serviceLocator = require('../../helpers/service_locator');
+const serviceLocator = require('../../helpers/service-locator');
 const mongoose = serviceLocator.get('mongoose');
 
 const HomeSchema = new mongoose.Schema(

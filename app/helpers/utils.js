@@ -5,7 +5,7 @@ const {
   SALT_ROUNDS,
   JWT_SECRET,
   JWT_EXPIRY,
-} = require('../../config/app_config');
+} = require('../../config/app-config');
 
 const compare = async (plainText, hashText) => {
   const isMatch = await bcrypt.compare(plainText, hashText);

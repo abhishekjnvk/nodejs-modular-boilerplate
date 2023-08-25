@@ -1,3 +1,3 @@
-const appConfig=require('./app_config');
+const appConfig = require('./app-config');
 
-module.exports = { app_config: appConfig };
+module.exports = { app: appConfig };

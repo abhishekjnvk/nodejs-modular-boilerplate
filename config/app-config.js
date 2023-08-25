@@ -32,10 +32,3 @@ module.exports = {
     hostArr : process.env.DB_HOST_ARR,
   },
 };
-
-// # ################# Local DB #################
-// # DB_PORT=27017
-// # DB_HOST=127.0.0.1
-// # DB_NAME=pp_dev_faizan
-// # DB_USER=
-// # DB_PASS=

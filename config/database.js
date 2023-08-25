@@ -1,7 +1,7 @@
 'use strict';
 
 const { listModules } = require('awilix');
-const serviceLocator = require('../app/helpers/service_locator');
+const serviceLocator = require('../app/helpers/service-locator');
 const logger = serviceLocator.get('logger');
 const path = require('path');
 const models = listModules(path.join(__dirname, '../app/module/*/*.model.js'));

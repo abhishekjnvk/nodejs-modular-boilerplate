@@ -1,4 +1,4 @@
-const serviceLocator = require('../helpers/service_locator');
+const serviceLocator = require('../helpers/service-locator');
 const path = serviceLocator.get('path')
 const logger = serviceLocator.get('logger')
 const { promises: { readdir } } = serviceLocator.get('fs')
