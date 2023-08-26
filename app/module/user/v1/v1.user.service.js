@@ -11,7 +11,6 @@ class UserServiceV1 extends BaseService{
 
     return {
       _id            : data._id,
-      user_id        : data._id,
       email          : data.email,
       email_verified : data.email_verified,
       name           : data.name,
@@ -39,7 +38,7 @@ class UserServiceV1 extends BaseService{
     const result = await _.__create(newUser);
     const userData = _.normalizeData(result);
     const authToken = await _.utils.signToken(userData);
-    _.event.fire("user::signup", { user: userData })
+    _.event.fire('user::signup', { user: userData });
 
     return _.parseResponseData(userData, authToken);
   }
@@ -56,7 +55,10 @@ class UserServiceV1 extends BaseService{
       throw httpErr;
     }
 
-    const isPasswordCorrect = await _.utils.compare(password, prevUser.password)
+    const isPasswordCorrect = await _.utils.compare(
+      password,
+      prevUser.password,
+    );
     if (!isPasswordCorrect) {
       const httpErr = _.httpErrors(
         _.httpStatus.UNAUTHORIZED,
@@ -77,19 +79,39 @@ class UserServiceV1 extends BaseService{
     let userData = await _.__get(userId);
     userData = _.normalizeData(userData);
 
-    const result={
-      user : userData
-    }
+    const result = {
+      user : userData,
+    };
 
     return _.parseResponseData(result);
   }
 
-  async emailVerification(token) {
+  async forgotPassword(email) {
     const _ = this;
-    const decodedToken = await _.utils.verifyJWT(token)
-    const { email } = decodedToken
+    const prevUser = await _.__getOne({ email }, true);
+    if (!prevUser) {
+      const httpErr = _.httpErrors(
+        _.httpStatus.UNAUTHORIZED,
+        'Email or password does not match',
+      );
+      throw httpErr;
+    }
+
+    const { name } = prevUser;
+    await _.emailTemplate.emailPasswordReset(name, email);
+    const result = {
+      message : 'Password reset email sent successfully',
+    };
+
+    return _.parseResponseData(result);
+  }
+
+  async resetPassword(token, password) {
+    const _ = this;
+    const decodedToken = await _.utils.verifyJWT(token);
+    const { email, password_change: passwordChange, timestamp } = decodedToken;
     const prevUser = await _.__getOne({ email });
-    if(!prevUser) {
+    if (!prevUser) {
       const httpErr = _.httpErrors(
         _.httpStatus.UNAUTHORIZED,
         'Email not registered',
@@ -97,7 +119,52 @@ class UserServiceV1 extends BaseService{
       throw httpErr;
     }
 
-    if(prevUser.email_verified) {
+    if (!passwordChange) {
+      const httpErr = _.httpErrors(_.httpStatus.UNAUTHORIZED, 'Invalid Token');
+      throw httpErr;
+    }
+
+    if (prevUser.password_update_timestamp >= timestamp) {
+      const httpErr = _.httpErrors(_.httpStatus.UNAUTHORIZED, 'Token Expired');
+      throw httpErr;
+    }
+    const passwordHash = await _.utils.getBcryptHash(password);
+
+    const updateBody = {
+      password                  : passwordHash,
+      password_update_timestamp : Date.now(),
+    };
+    if (!prevUser.email_verified) {
+      updateBody.email_verified = true;
+      updateBody.email_verification_timestamp = Date.now();
+    }
+
+    let userData = await _.__update(prevUser._id, updateBody);
+    userData = _.normalizeData(userData);
+    const authToken = await _.utils.signToken(userData);
+
+    return _.parseResponseData(userData, authToken);
+  }
+
+  async emailVerification(token) {
+    const _ = this;
+    const decodedToken = await _.utils.verifyJWT(token);
+    const { email, verification } = decodedToken;
+    const prevUser = await _.__getOne({ email });
+    if (!prevUser) {
+      const httpErr = _.httpErrors(
+        _.httpStatus.UNAUTHORIZED,
+        'Email not registered',
+      );
+      throw httpErr;
+    }
+
+    if (!verification) {
+      const httpErr = _.httpErrors(_.httpStatus.UNAUTHORIZED, 'Invalid Token');
+      throw httpErr;
+    }
+
+    if (prevUser.email_verified) {
       const httpErr = _.httpErrors(
         _.httpStatus.CONFLICT,
         'Email Already verified',
@@ -105,7 +172,11 @@ class UserServiceV1 extends BaseService{
       throw httpErr;
     }
 
-    let userData = await _.__update(prevUser._id, { email_verified: true })
+    let userData = await _.__update(prevUser._id, {
+      email_verified               : true,
+      email_verification_timestamp : Date.now(),
+    });
+
     userData = _.normalizeData(userData);
     const authToken = await _.utils.signToken(userData);
 

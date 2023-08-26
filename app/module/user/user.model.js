@@ -22,9 +22,17 @@ const HomeSchema = new mongoose.Schema(
       required : true
     },
     date : {
-      type    : String,
+      type    : Number,
       default : Date.now(),
     },
+    email_verification_timestamp : {
+      type    : Number,
+      default : 0,
+    },
+    password_update_timestamp : {
+      type    : Number,
+      default : 0,
+    }
   },
   {
     timestamps : true,

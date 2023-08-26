@@ -9,9 +9,8 @@ const unauthorizedPaths = [
   /\/login/,
   /\/health/,
   /\/email-verification/,
-  /\/resendtoken/,
-  /\/forgotpassword/,
-  /\/resetpassword/,
+  /\/forgot-password/,
+  /\/reset-password/,
 ];
 
 function getToken(req) {

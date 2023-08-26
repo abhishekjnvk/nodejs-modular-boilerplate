@@ -64,6 +64,34 @@ class UserControllerV1 extends BaseController{
     }
   }
 
+  async resetPassword(req, res, next) {
+    try {
+      const { body : { password, token } } = req;
+      this.logger.info(`${this.name} resetPassword called`);
+      const response = await this.service.resetPassword(token, password);
+      res.send(response);
+      res.end();
+      this.logger.info(`${this.name} resetPassword successful`);
+    } catch (err) {
+      this.logger.error(`${this.name} resetPassword error: ${err}`);
+      next(err);
+    }
+  }
+
+  async forgotPassword(req, res, next) {
+    try {
+      const { body : { email } } = req;
+      this.logger.info(`${this.name} forgotPassword called`);
+      const response = await this.service.forgotPassword(email);
+      res.send(response);
+      res.end();
+      this.logger.info(`${this.name} forgotPassword successful`);
+    } catch (err) {
+      this.logger.error(`${this.name} forgotPassword error: ${err}`);
+      next(err);
+    }
+  }
+
 }
 
 module.exports = UserControllerV1;

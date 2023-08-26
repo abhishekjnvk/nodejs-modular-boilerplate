@@ -11,6 +11,7 @@ class BaseService{
     this.httpContext = opts.httpContext;
     this.constants = opts.constants;
     this.event = opts.event;
+    this.emailTemplate=opts.emailTemplate;
   }
 
   async parseResponseData(data = {}, authToken) {
