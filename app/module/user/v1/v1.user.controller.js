@@ -35,6 +35,21 @@ class UserControllerV1 extends BaseController{
     }
   }
 
+  async emailVerification(req, res, next) {
+    try {
+      const { query : { token } } = req;
+      this.logger.info(`${this.name} emailVerification called`);
+      const response = await this.service.emailVerification(token);
+      this.setTokenInCookie(response, res);
+      res.send(response);
+      res.end();
+      this.logger.info(`${this.name} emailVerification successful`);
+    } catch (err) {
+      this.logger.error(`${this.name} emailVerification error: ${err}`);
+      next(err);
+    }
+  }
+
   async myProfile(req, res, next) {
     try {
       const { auth } = req;
@@ -48,6 +63,7 @@ class UserControllerV1 extends BaseController{
       next(err);
     }
   }
+
 }
 
 module.exports = UserControllerV1;

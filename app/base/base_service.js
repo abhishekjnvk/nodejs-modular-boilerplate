@@ -10,6 +10,7 @@ class BaseService{
     this.databaseService = opts.databaseService;
     this.httpContext = opts.httpContext;
     this.constants = opts.constants;
+    this.event = opts.event;
   }
 
   async parseResponseData(data = {}, authToken) {
@@ -24,7 +25,6 @@ class BaseService{
       request_id                      : reqId,
       session_id                      : sessionId
     };
-    this.logger.info("parsed response data")
 
     return result;
   }
@@ -58,6 +58,15 @@ class BaseService{
       opts,
     );
 
+    _.logger.info(`${_.modelName} created successfully`);
+
+    return result;
+  }
+
+
+  async __findOneAndUpdate(query, updateObject, opts={}, noErr=false) {
+    const _ = this;
+    const result = await _.databaseService.findOneAndUpdate(_.modelName, query, updateObject, opts, noErr);
     _.logger.info(`${_.modelName} created successfully`);
 
     return result;

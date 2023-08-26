@@ -7,7 +7,7 @@ class UserServiceV1 extends BaseService{
 
   normalizeData(data) {
     const _ = this;
-    _.logger.info('Normalizing data');
+    _.logger.info('Normalizing user data');
 
     return {
       _id            : data._id,
@@ -38,9 +38,10 @@ class UserServiceV1 extends BaseService{
     };
     const result = await _.__create(newUser);
     const userData = _.normalizeData(result);
-    const token = await _.utils.signToken(userData);
+    const authToken = await _.utils.signToken(userData);
+    _.event.fire("user::signup", { user: userData })
 
-    return _.parseResponseData(userData, token);
+    return _.parseResponseData(userData, authToken);
   }
 
   async login(body) {
@@ -50,7 +51,7 @@ class UserServiceV1 extends BaseService{
     if (!prevUser) {
       const httpErr = _.httpErrors(
         _.httpStatus.UNAUTHORIZED,
-        'User or password does not match',
+        'Email or password does not match',
       );
       throw httpErr;
     }
@@ -59,17 +60,16 @@ class UserServiceV1 extends BaseService{
     if (!isPasswordCorrect) {
       const httpErr = _.httpErrors(
         _.httpStatus.UNAUTHORIZED,
-        'User or password does not match',
+        'Email or password does not match',
       );
       throw httpErr;
     }
 
     const userData = _.normalizeData(prevUser);
-    const token = await _.utils.signToken(userData);
+    const authToken = await _.utils.signToken(userData);
 
-    return _.parseResponseData(userData, token);
+    return _.parseResponseData(userData, authToken);
   }
-
 
   async myProfile(user) {
     const _ = this;
@@ -82,6 +82,34 @@ class UserServiceV1 extends BaseService{
     }
 
     return _.parseResponseData(result);
+  }
+
+  async emailVerification(token) {
+    const _ = this;
+    const decodedToken = await _.utils.verifyJWT(token)
+    const { email } = decodedToken
+    const prevUser = await _.__getOne({ email });
+    if(!prevUser) {
+      const httpErr = _.httpErrors(
+        _.httpStatus.UNAUTHORIZED,
+        'Email not registered',
+      );
+      throw httpErr;
+    }
+
+    if(prevUser.email_verified) {
+      const httpErr = _.httpErrors(
+        _.httpStatus.CONFLICT,
+        'Email Already verified',
+      );
+      throw httpErr;
+    }
+
+    let userData = await _.__update(prevUser._id, { email_verified: true })
+    userData = _.normalizeData(userData);
+    const authToken = await _.utils.signToken(userData);
+
+    return _.parseResponseData(userData, authToken);
   }
 }
 

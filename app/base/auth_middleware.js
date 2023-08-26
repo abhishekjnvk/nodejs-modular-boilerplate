@@ -8,7 +8,7 @@ const unauthorizedPaths = [
   /\/register/,
   /\/login/,
   /\/health/,
-  /\/verification/,
+  /\/email-verification/,
   /\/resendtoken/,
   /\/forgotpassword/,
   /\/resetpassword/,

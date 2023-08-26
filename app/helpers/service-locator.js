@@ -82,8 +82,14 @@ ServiceLocator.prototype.register = function () {
     .register({
       config : asValue(require('../../config')),
     })
-    // Load Providers
     .loadModules([path.join(__dirname, '../providers/*/index.js')], {
+      formatName      : (_, descriptor) => camelCase(descriptor.value.name),
+      resolverOptions : {
+        lifetime : Lifetime.SINGLETON,
+        register : asClass,
+      },
+    })
+    .loadModules([path.join(__dirname, '../templates/*.js')], {
       formatName      : (_, descriptor) => camelCase(descriptor.value.name),
       resolverOptions : {
         lifetime : Lifetime.SINGLETON,

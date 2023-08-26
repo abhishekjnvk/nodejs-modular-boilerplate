@@ -1,12 +1,13 @@
 const appConfig={
-  APP_NAME    : process.env.APP_NAME || 'My App',
-  APP_VERSION : process.env.APP_VERSION || '1.0.0',
-  APP_EMAIL   : process.env.APP_EMAIL || 'bot@sample_app.com',
-  API_HOST    : process.env.API_HOST || 'http://localhost:8080',
-  SALT_ROUNDS : process.env.SALT_ROUNDS || 10,
-  JWT_SECRET  : process.env.JWT_SECRET || "hakuna-matata",
-  JWT_EXPIRY  : 24 * 60 * 60 * 1000 * 30, // 30 Days (milliseconds)
-  APP_LOGO    :
+  APP_NAME     : process.env.APP_NAME || 'My App',
+  APP_VERSION  : process.env.APP_VERSION || '1.0.0',
+  APP_EMAIL    : process.env.APP_EMAIL || 'bot@sample_app.com',
+  API_HOST     : process.env.API_HOST || 'http://localhost:8080',
+  FRONTEND_URL : process.env.FRONTEND_URL || 'http://localhost:3000',
+  SALT_ROUNDS  : process.env.SALT_ROUNDS || 10,
+  JWT_SECRET   : process.env.JWT_SECRET || "hakuna-matata",
+  JWT_EXPIRY   : 24 * 60 * 60 * 1000 * 30, // 30 Days (milliseconds)
+  APP_LOGO     :
     process.env.APP_LOGO ||
     'https://previews.123rf.com/images/aquir/aquir1311/aquir131100316/23569861-sample-grunge-red-round-stamp.jpg',
   APP_TIMEZONE           : process.env.APP_TIMEZONE || 'Asia/Kolkata',
@@ -17,10 +18,8 @@ const appConfig={
   APP_DECIMAL_SEPARATOR  : '.',
   APP_THOUSAND_SEPARATOR : ',',
   APP_FILE_SIZE_LIMIT    : process.env.APP_FILE_SIZE_LIMIT || '10MB',
-  MONGO_URL              : process.env.MONGO_URL || 'http://localhost:2',
-  APP_TOKEN_SECRET       : process.env.APP_TOKEN_SECRET || 'myappsecret',
-  APP_TOKEN_EXPIRE       : process.env.APP_TOKEN_EXPIRE || 60 * 60 * 24 * 30 * 1000, // 30 days
-  mongo                  : {
+
+  mongo : {
     port    : process.env.DB_PORT || 27017,
     host    : process.env.DB_HOST || 'localhost',
     name    : process.env.DB_NAME || 'node-modular',

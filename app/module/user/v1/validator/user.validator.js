@@ -24,4 +24,15 @@ const validateLogin = celebrate(
   {}
 );
 
-module.exports = { validateCreateUser, validateLogin };
+
+const emailVerification = celebrate(
+  {
+    query : joi.object({
+      token : joi.string().required(),
+    }),
+  },
+  { allowUnknown: false, stripUnknown: true, warnings: false },
+  {}
+);
+
+module.exports = { validateCreateUser, validateLogin, emailVerification };

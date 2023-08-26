@@ -48,7 +48,7 @@ class EmailProvider{
           this.logger.error(`Mail Error ${error.message}`);
           reject(error);
         } else {
-          this.logger.info(`Mail Sent ${info.response}`);
+          this.logger.info(`Mail Sent`);
           resolve(info.response);
         }
       });
