@@ -1,9 +1,10 @@
 const serviceLocator = require('../helpers/service-locator');
-const path = serviceLocator.get('path')
-const logger = serviceLocator.get('logger')
-const { promises: { readdir } } = serviceLocator.get('fs')
-const glob = serviceLocator.get('glob')
-const express = serviceLocator.get('express')
+const path = serviceLocator.get('path');
+const {
+  promises: { readdir },
+} = serviceLocator.get('fs');
+const glob = serviceLocator.get('glob');
+const express = serviceLocator.get('express');
 const routers = {};
 
 const getDirectories = async source =>
@@ -13,7 +14,6 @@ const getDirectories = async source =>
 
 module.exports = function (app) {
   getDirectories(path.join(__dirname, '../module')).then(async modules => {
-
     modules.map(async module => {
       getDirectories(path.join(__dirname, '../module', module)).then(
         async versions => {
@@ -25,16 +25,19 @@ module.exports = function (app) {
             }
 
             app.use(`/${version}`, router);
-            // logger.info(`Loading module /${version}/${module}`)
             glob(
-              `${path.join(__dirname, '../module', module, version)}/*.routes.js`,
+              `${path.join(
+                __dirname,
+                '../module',
+                module,
+                version,
+              )}/*routes.js`,
               (err, roteFiles) => {
                 roteFiles.map(routeFile => {
-                  require(routeFile).routes(router, serviceLocator)
+                  require(routeFile).routes(router, serviceLocator);
                 });
               },
             );
-
           });
         },
       );

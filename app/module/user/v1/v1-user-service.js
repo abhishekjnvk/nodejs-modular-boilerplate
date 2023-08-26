@@ -1,6 +1,6 @@
-const BaseService = require('../../../base/base_service');
+const BaseService = require('../../../base/base-service');
 
-class UserServiceV1 extends BaseService{
+class UserServiceV1 extends BaseService {
   constructor(opts) {
     super(opts, 'User');
   }
@@ -10,10 +10,10 @@ class UserServiceV1 extends BaseService{
     _.logger.info('Normalizing user data');
 
     return {
-      _id            : data._id,
-      email          : data.email,
-      email_verified : data.email_verified,
-      name           : data.name,
+      _id: data._id,
+      email: data.email,
+      email_verified: data.email_verified,
+      name: data.name,
     };
   }
 
@@ -32,7 +32,7 @@ class UserServiceV1 extends BaseService{
     const passwordHash = await _.utils.getBcryptHash(password);
     const newUser = {
       email,
-      password : passwordHash,
+      password: passwordHash,
       name,
     };
     const result = await _.__create(newUser);
@@ -80,7 +80,7 @@ class UserServiceV1 extends BaseService{
     userData = _.normalizeData(userData);
 
     const result = {
-      user : userData,
+      user: userData,
     };
 
     return _.parseResponseData(result);
@@ -100,7 +100,7 @@ class UserServiceV1 extends BaseService{
     const { name } = prevUser;
     await _.emailTemplate.emailPasswordReset(name, email);
     const result = {
-      message : 'Password reset email sent successfully',
+      message: 'Password reset email sent successfully',
     };
 
     return _.parseResponseData(result);
@@ -131,8 +131,8 @@ class UserServiceV1 extends BaseService{
     const passwordHash = await _.utils.getBcryptHash(password);
 
     const updateBody = {
-      password                  : passwordHash,
-      password_update_timestamp : Date.now(),
+      password: passwordHash,
+      password_update_timestamp: Date.now(),
     };
     if (!prevUser.email_verified) {
       updateBody.email_verified = true;
@@ -173,8 +173,8 @@ class UserServiceV1 extends BaseService{
     }
 
     let userData = await _.__update(prevUser._id, {
-      email_verified               : true,
-      email_verification_timestamp : Date.now(),
+      email_verified: true,
+      email_verification_timestamp: Date.now(),
     });
 
     userData = _.normalizeData(userData);

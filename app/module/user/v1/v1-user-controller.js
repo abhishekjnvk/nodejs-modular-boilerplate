@@ -1,6 +1,6 @@
-const BaseController = require('../../../base/base_controller');
+const BaseController = require('../../../base/base-controller');
 
-class UserControllerV1 extends BaseController{
+class UserControllerV1 extends BaseController {
   constructor(opts) {
     super(opts, 'UserControllerV1', 'userServiceV1');
   }
@@ -37,7 +37,9 @@ class UserControllerV1 extends BaseController{
 
   async emailVerification(req, res, next) {
     try {
-      const { query : { token } } = req;
+      const {
+        query: { token },
+      } = req;
       this.logger.info(`${this.name} emailVerification called`);
       const response = await this.service.emailVerification(token);
       this.setTokenInCookie(response, res);
@@ -66,7 +68,9 @@ class UserControllerV1 extends BaseController{
 
   async resetPassword(req, res, next) {
     try {
-      const { body : { password, token } } = req;
+      const {
+        body: { password, token },
+      } = req;
       this.logger.info(`${this.name} resetPassword called`);
       const response = await this.service.resetPassword(token, password);
       res.send(response);
@@ -80,7 +84,9 @@ class UserControllerV1 extends BaseController{
 
   async forgotPassword(req, res, next) {
     try {
-      const { body : { email } } = req;
+      const {
+        body: { email },
+      } = req;
       this.logger.info(`${this.name} forgotPassword called`);
       const response = await this.service.forgotPassword(email);
       res.send(response);
@@ -91,7 +97,6 @@ class UserControllerV1 extends BaseController{
       next(err);
     }
   }
-
 }
 
 module.exports = UserControllerV1;

@@ -1,17 +1,20 @@
 class EmailTemplate{
   constructor(opts) {
     this.logger = opts.logger;
-    this.config = opts.config
-    this.utils = opts.utils
-    this.emailProvider = opts.emailProvider
+    this.config = opts.config;
+    this.utils = opts.utils;
+    this.emailProvider = opts.emailProvider;
   }
 
   async emailVerificationMail(userName, to) {
-    const data={ email: to, verification: true }
-    const verificationToken= await this.utils.signToken(data, 3600*24*1000);
-    const verificationLink= `${this.config.FRONTEND_URL}/email-verification?token=${verificationToken}`
+    const data = { email: to, verification: true };
+    const verificationToken = await this.utils.signToken(
+      data,
+      3600 * 24 * 1000,
+    );
+    const verificationLink = `${this.config.FRONTEND_URL}/email-verification?token=${verificationToken}`;
     const currentYear = new Date().getFullYear();
-    const htmlContent=`<!DOCTYPE html><html>
+    const htmlContent = `<!DOCTYPE html><html>
         <head><title>Email Verification ${this.config.APP_NAME}</title></head>
         <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
             <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
@@ -39,26 +42,34 @@ class EmailTemplate{
         </body>
     </html>`;
 
-    const textContent= `Hello ${userName},
+    const textContent = `Hello ${userName},
     Thank you for signing up on our website. To complete your registration, please click the link below to verify your email address:
     ${verificationLink}
     If you did not sign up for an account on our website, please ignore this email.
     Best regards,
     ${this.config.APP_NAME} Team
     © ${currentYear} ${this.config.APP_NAME}. All rights reserved.`;
-    const subject =`Email Verification | ${this.config.APP_NAME}`
-    const result = await this.emailProvider.sendHtmlEmail(to, subject, htmlContent, textContent)
-    this.logger.info(" Verification Email sent successfully");
+    const subject = `Email Verification | ${this.config.APP_NAME}`;
+    const result = await this.emailProvider.sendHtmlEmail(
+      to,
+      subject,
+      htmlContent,
+      textContent,
+    );
+    this.logger.info(' Verification Email sent successfully');
 
-    return result
+    return result;
   }
 
   async emailPasswordReset(userName, to) {
-    const data={ email: to, password_change: true, timestamp: Date.now() }
-    const verificationToken= await this.utils.signToken(data, 3600*24*1000);
-    const verificationLink= `${this.config.FRONTEND_URL}/reset-password?token=${verificationToken}`
+    const data = { email: to, password_change: true, timestamp: Date.now() };
+    const verificationToken = await this.utils.signToken(
+      data,
+      3600 * 24 * 1000,
+    );
+    const verificationLink = `${this.config.FRONTEND_URL}/reset-password?token=${verificationToken}`;
     const currentYear = new Date().getFullYear();
-    const htmlContent=`
+    const htmlContent = `
     <!DOCTYPE html><html>
         <head><title>Password Change Request</title></head>
         <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
@@ -88,7 +99,7 @@ class EmailTemplate{
         </body>
         </html>f`;
 
-    const textContent= `Hello ${userName},
+    const textContent = `Hello ${userName},
     We have received a request to change your password. If you initiated this request, please follow the link below to proceed:
     ${verificationLink}
     
@@ -96,14 +107,17 @@ class EmailTemplate{
     Best regards,
     ${this.config.APP_NAME} Team
     © ${currentYear} ${this.config.APP_NAME}. All rights reserved.`;
-    const subject =`Email Verification | ${this.config.APP_NAME}`
-    const result = await this.emailProvider.sendHtmlEmail(to, subject, htmlContent, textContent)
-    this.logger.info(" Verification Email sent successfully");
+    const subject = `Email Verification | ${this.config.APP_NAME}`;
+    const result = await this.emailProvider.sendHtmlEmail(
+      to,
+      subject,
+      htmlContent,
+      textContent,
+    );
+    this.logger.info(' Verification Email sent successfully');
 
-    return result
+    return result;
   }
 }
 
-
 module.exports = EmailTemplate;
-

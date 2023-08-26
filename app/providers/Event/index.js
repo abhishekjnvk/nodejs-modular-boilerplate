@@ -1,3 +1,3 @@
-const Event = require('./EventProvider.js');
+const Event = require('./event-provider');
 
 module.exports = Event;

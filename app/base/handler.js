@@ -36,19 +36,19 @@ function handleCelebrateError(err) {
 }
 
 // Handle All Errors
-module.exports = function(app, serviceLocator) {
+module.exports = function (app, serviceLocator) {
   const logger = serviceLocator.get('logger');
   const httpStatus = serviceLocator.get('httpStatus');
-  const httpContext = serviceLocator.get('httpContext')
-  const constants = serviceLocator.get('constants')
+  const httpContext = serviceLocator.get('httpContext');
+  const constants = serviceLocator.get('constants');
 
   setTimeout(() => {
-    logger.info("Registered error handler")
+    logger.info('Registered error handler');
     // eslint-disable-next-line no-unused-vars
     app.use((err, req, res, next) => {
       err = handleCelebrateError(err);
-      const code = err.statusCode || 500
-      const message = err.message || "Something went wrong";
+      const code = err.statusCode || 500;
+      const message = err.message || 'Something went wrong';
       const requestId = httpContext.get(constants.REQUEST_ID_KEY);
       const sessionId = httpContext.get(constants.SESSION_ID_KEY);
       res.status(code).json({
@@ -56,16 +56,16 @@ module.exports = function(app, serviceLocator) {
         code       : String(code),
         message,
         request_id : requestId,
-        session_id : sessionId
+        session_id : sessionId,
       });
-    })
+    });
 
-    app.all("*", (_, res) => {
+    app.all('*', (_, res) => {
       logger.error('Error 404');
       res.status(httpStatus.NOT_FOUND).send({
         code    : httpStatus.NOT_FOUND,
         message : 'Not Found',
       });
-    })
+    });
   }, 2000);
-}
+};

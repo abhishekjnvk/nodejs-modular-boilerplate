@@ -1,4 +1,10 @@
-const { asClass, asValue, Lifetime, createContainer, listModules } = require('awilix');
+const {
+  asClass,
+  asValue,
+  Lifetime,
+  createContainer,
+  listModules,
+} = require('awilix');
 const path = require('path');
 const { camelCase } = require('lodash');
 
@@ -10,8 +16,8 @@ function ServiceLocator() {
 ServiceLocator.prototype.register = function () {
   this.container.loadModules(
     [
-      path.join(__dirname, '../module/*/*/*.controller.js'),
-      path.join(__dirname, '../module/*/*/*.service.js'),
+      path.join(__dirname, '../module/*/*/*controller.js'),
+      path.join(__dirname, '../module/*/*/*service.js'),
     ],
     {
       // eslint-disable-next-line no-unused-vars
@@ -97,7 +103,9 @@ ServiceLocator.prototype.register = function () {
       },
     });
 
-  const modules = listModules([path.join(__dirname, '../module/*/*constants.js')]);
+  const modules = listModules([
+    path.join(__dirname, '../module/*/*constants.js'),
+  ]);
   for (const module of modules) {
     const name = camelCase(module.name);
     this.container.register({

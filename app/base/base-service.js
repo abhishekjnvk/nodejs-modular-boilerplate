@@ -11,11 +11,10 @@ class BaseService{
     this.httpContext = opts.httpContext;
     this.constants = opts.constants;
     this.event = opts.event;
-    this.emailTemplate=opts.emailTemplate;
+    this.emailTemplate = opts.emailTemplate;
   }
 
   async parseResponseData(data = {}, authToken) {
-
     const reqId = this.httpContext.get(this.constants.REQUEST_ID_KEY);
     const sessionId = this.httpContext.get(this.constants.SESSION_ID_KEY);
 
@@ -24,7 +23,7 @@ class BaseService{
       data,
       [this.constants.AUTH_TOKEN_KEY] : authToken,
       request_id                      : reqId,
-      session_id                      : sessionId
+      session_id                      : sessionId,
     };
 
     return result;
@@ -40,7 +39,7 @@ class BaseService{
       });
 
       return this.parseResponseData({
-        app_version : this.config.app.APP_VERSION,
+        app_version : this.config.APP_VERSION,
         api_version : version,
         message     : 'Welcome to the home page',
       });
@@ -64,10 +63,15 @@ class BaseService{
     return result;
   }
 
-
-  async __findOneAndUpdate(query, updateObject, opts={}, noErr=false) {
+  async __findOneAndUpdate(query, updateObject, opts = {}, noErr = false) {
     const _ = this;
-    const result = await _.databaseService.findOneAndUpdate(_.modelName, query, updateObject, opts, noErr);
+    const result = await _.databaseService.findOneAndUpdate(
+      _.modelName,
+      query,
+      updateObject,
+      opts,
+      noErr,
+    );
     _.logger.info(`${_.modelName} created successfully`);
 
     return result;

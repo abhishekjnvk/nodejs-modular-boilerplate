@@ -5,15 +5,15 @@ const logger = serviceLocator.get('logger');
 
 const UserListener = {
   signup : async ({ user }) => {
-    try{
-      logger.info("User listener signup() called")
-      const { name, email }= user;
+    try {
+      logger.info('User listener signup() called');
+      const { name, email } = user;
       await emailTemplate.emailVerificationMail(name, email);
-      logger.info("User listener signup() succeeded")
-    }catch(err) {
-      logger.error(err)
+      logger.info('User listener signup() succeeded');
+    } catch (err) {
+      logger.error(err);
     }
-  }
-}
+  },
+};
 
 module.exports = UserListener;

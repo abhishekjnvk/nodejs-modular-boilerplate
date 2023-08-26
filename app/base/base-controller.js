@@ -14,7 +14,7 @@ class BaseController{
     try {
       let version = req.originalUrl.split('/')[1];
       this.logger.info(`home controller ${version}`);
-      version = `${(version.substring(1, version.length))}`;
+      version = `${version.substring(1, version.length)}`;
       const response = await this.service.home(version);
       res.send(response);
       res.end();
@@ -41,7 +41,6 @@ class BaseController{
     }
   }
 
-
   async getAll(req, res, next) {
     const _ = this;
     _.logger.info(`${_.name} getAll() called`);
@@ -56,7 +55,6 @@ class BaseController{
       next(err);
     }
   }
-
 
   async get(req, res, next) {
     const _ = this;
@@ -81,7 +79,7 @@ class BaseController{
       const result = await this.service.getAllWithPagination(
         restQuery,
         Number(page),
-        Number(limit)
+        Number(limit),
       );
 
       res.send(result);
@@ -149,14 +147,14 @@ class BaseController{
     }
   }
 
-  setCookie(cookieObject={}, res, maxAge=86400000) {
+  setCookie(cookieObject = {}, res, maxAge = 86400000) {
     const _ = this;
     _.logger.info(`${_.name} setCookie() called`);
     try {
       for (const key in cookieObject) {
         if (Object.hasOwnProperty.call(cookieObject, key)) {
           const value = cookieObject[key];
-          if(value) {
+          if (value) {
             res.cookie(key, value, { maxAge });
           }
         }
@@ -170,12 +168,11 @@ class BaseController{
   setTokenInCookie(data, res) {
     const authToken = data[this.constants.AUTH_TOKEN_KEY];
 
-    if(authToken) {
+    if (authToken) {
       const cookieObj = { [this.constants.AUTH_TOKEN_KEY]: authToken };
       this.setCookie(cookieObj, res);
     }
   }
-
 }
 
 module.exports = BaseController;

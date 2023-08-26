@@ -4,8 +4,8 @@ const logger = serviceLocator.get('logger');
 
 const AppListener = {
   startServer : ({ message }) => {
-    logger.info(message)
-  }
-}
+    logger.info(message);
+  },
+};
 
 module.exports = AppListener;

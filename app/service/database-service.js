@@ -10,7 +10,7 @@ class DatabaseService{
       modelName,
       query,
       returnOne,
-      projections
+      projections,
     );
   }
 
@@ -20,7 +20,7 @@ class DatabaseService{
       modelName,
       query,
       noErr,
-      projections
+      projections,
     );
   }
 
@@ -41,21 +41,21 @@ class DatabaseService{
     query,
     { projections = null, sortOption = {}, populate = null },
     page,
-    limit
+    limit,
   ) {
     return await this.dbService.getByQueryAndSortWithPagination(
       modelName,
       query,
       { sortOption, projections, populate },
       page,
-      limit
+      limit,
     );
   }
 
   async getByQueryAndSort(
     modelName,
     query,
-    { projections = null, sortOption = {}, populate = null }
+    { projections = null, sortOption = {}, populate = null },
   ) {
     return await this.dbService.getByQueryAndSort(modelName, query, {
       sortOption,
@@ -74,7 +74,7 @@ class DatabaseService{
       query,
       sumKey,
       groupKey,
-      unwind
+      unwind,
     );
   }
 
@@ -85,7 +85,7 @@ class DatabaseService{
       text,
       page,
       limit,
-      projections
+      projections,
     );
   }
 
@@ -131,7 +131,7 @@ class DatabaseService{
     text,
     limit,
     projections = null,
-    sort = {}
+    sort = {},
   ) {
     return await this.dbService.fuzzySearch(
       modelName,
@@ -139,7 +139,7 @@ class DatabaseService{
       text,
       limit,
       projections,
-      sort
+      sort,
     );
   }
 
@@ -148,7 +148,7 @@ class DatabaseService{
       modelName,
       id,
       updateObject,
-      noErr
+      noErr,
     );
   }
 
@@ -167,14 +167,14 @@ class DatabaseService{
       query,
       updateObject,
       opts,
-      noErr
+      noErr,
     );
   }
 
   async getOneByQueryAndSort(
     modelName,
     query,
-    { projections = null, sortOption = {}, populate = null }
+    { projections = null, sortOption = {}, populate = null },
   ) {
     return await this.dbService.getOneByQueryAndSort(modelName, query, {
       sortOption,
@@ -188,14 +188,14 @@ class DatabaseService{
     query,
     { projections = null, sortOption = {}, populate = null },
     page = 1,
-    limit = 10
+    limit = 10,
   ) {
     return await this.dbService.paginate(
       modelName,
       query,
       { projections, sortOption, populate },
       page,
-      limit
+      limit,
     );
   }
 
@@ -204,7 +204,7 @@ class DatabaseService{
       modelName,
       query,
       newObject,
-      skipUId
+      skipUId,
     );
   }
 }

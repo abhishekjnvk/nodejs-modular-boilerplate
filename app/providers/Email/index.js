@@ -1,3 +1,3 @@
-const EmailProvider = require('./EmailProvider');
+const EmailProvider = require('./email-provider');
 
 module.exports = EmailProvider;

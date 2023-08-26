@@ -2,12 +2,11 @@
 
 const nanoid = require('nanoid/async');
 
-const ITEM_ALPHABET='0123456789';
-const ITEM_ID_LENGTH=12;
-const OTP_LENGTH=6;
-const SHORT_ID_LENGTH=6;
-const BATCH_SIZE_REQ=20;
-
+const ITEM_ALPHABET = '0123456789';
+const ITEM_ID_LENGTH = 12;
+const OTP_LENGTH = 6;
+const SHORT_ID_LENGTH = 6;
+const BATCH_SIZE_REQ = 20;
 
 const { customAlphabet } = nanoid;
 const nid = customAlphabet(ITEM_ALPHABET, ITEM_ID_LENGTH);

@@ -47,7 +47,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -74,7 +74,7 @@ class MongoService{
     if (!result && !noErr) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -115,12 +115,12 @@ class MongoService{
     if (!result && !noErr) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} item with id - ${id} could not be found`
+        `${this.name} ${modelName} item with id - ${id} could not be found`,
       );
       throw err;
     }
     this.log.info(
-      `${this.name} ${modelName} item with id - ${id} fetched successfully`
+      `${this.name} ${modelName} item with id - ${id} fetched successfully`,
     );
 
     return result;
@@ -138,7 +138,7 @@ class MongoService{
   async getByQueryAndSort(
     modelName,
     query,
-    { projections = null, sortOption = {}, populate = null }
+    { projections = null, sortOption = {}, populate = null },
   ) {
     // initialise model
     const model = this.getModelInstance(modelName);
@@ -151,7 +151,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -177,12 +177,12 @@ class MongoService{
     query,
     { projections = null, sortOption = {}, populate = null },
     page,
-    limit
+    limit,
   ) {
     if (page < 0 || limit < 0) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} Page or Limit cannot be negative`
+        `${this.name} Page or Limit cannot be negative`,
       );
       throw err;
     }
@@ -199,7 +199,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -227,7 +227,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.Conflict,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -264,7 +264,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -287,7 +287,7 @@ class MongoService{
     if (page < 0 || limit < 0) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} Page or Limit cannot be negative`
+        `${this.name} Page or Limit cannot be negative`,
       );
       throw err;
     }
@@ -297,7 +297,7 @@ class MongoService{
     const result = await model
       .find(
         { ...query, ...textSearchQuery },
-        { score: { $meta: 'textScore' }, ...projections }
+        { score: { $meta: 'textScore' }, ...projections },
       )
       .sort({ score: { $meta: 'textScore' } })
       .skip(page * limit)
@@ -306,7 +306,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -329,7 +329,7 @@ class MongoService{
 
     if (!skipUId) {
       newObjectInstance._id = await this.uIdGen.getId(
-        this.modelNameToIdPrefix[modelName]
+        this.modelNameToIdPrefix[modelName],
       );
     }
 
@@ -359,17 +359,17 @@ class MongoService{
     const updatedObjectInstance = await model.findOneAndUpdate(
       { _id: id },
       updateObject,
-      options
+      options,
     );
     if (!updatedObjectInstance) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} item with ${id} could not be updated`
+        `${this.name} ${modelName} item with ${id} could not be updated`,
       );
       throw err;
     }
     this.log.info(
-      `${this.name} ${modelName} item with id: ${id} updated successfully`
+      `${this.name} ${modelName} item with id: ${id} updated successfully`,
     );
 
     return updatedObjectInstance;
@@ -390,7 +390,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} items could not be updated`
+        `${this.name} ${modelName} items could not be updated`,
       );
       throw err;
     }
@@ -413,12 +413,12 @@ class MongoService{
     if (!deletedObjectInstance) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} item with id: ${id} could not be deleted`
+        `${this.name} ${modelName} item with id: ${id} could not be deleted`,
       );
       throw err;
     }
     this.log.info(
-      `${this.name} ${modelName} item with id: ${id} deleted successfully`
+      `${this.name} ${modelName} item with id: ${id} deleted successfully`,
     );
 
     return { id };
@@ -455,7 +455,7 @@ class MongoService{
     if (!deletedObjectInstance) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} item  could not be deleted`
+        `${this.name} ${modelName} item  could not be deleted`,
       );
       throw err;
     }
@@ -491,7 +491,7 @@ class MongoService{
     if (!options.skipUId) {
       uIds = await this.uIdGen.getBulkIds(
         totalLength,
-        this.modelNameToIdPrefix[modelName]
+        this.modelNameToIdPrefix[modelName],
       );
 
       let counter = 0;
@@ -503,7 +503,7 @@ class MongoService{
 
     const result = await model.insertMany(newObjects, options);
     this.log.info(
-      `${this.name} ${modelName} many entries inserted successfully`
+      `${this.name} ${modelName} many entries inserted successfully`,
     );
 
     return result;
@@ -552,12 +552,12 @@ class MongoService{
     text,
     limit,
     projections = null,
-    sort = {}
+    sort = {},
   ) {
     if (limit < 0) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} limit cannot be negative`
+        `${this.name} limit cannot be negative`,
       );
       throw err;
     }
@@ -577,7 +577,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -599,7 +599,7 @@ class MongoService{
     id,
     updateObject,
     noErr = false,
-    opts = {}
+    opts = {},
   ) {
     let options = { new: true };
     options = { ...options, ...opts };
@@ -607,19 +607,19 @@ class MongoService{
     const updatedObjectInstance = await model.findByIdAndUpdate(
       id,
       updateObject,
-      options
+      options,
     );
 
     if (!updatedObjectInstance && !noErr) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} item with ${id} could not be updated`
+        `${this.name} ${modelName} item with ${id} could not be updated`,
       );
       throw err;
     }
 
     this.log.info(
-      `${this.name} ${modelName} item with id: ${id} updated successfully`
+      `${this.name} ${modelName} item with id: ${id} updated successfully`,
     );
 
     return updatedObjectInstance;
@@ -640,7 +640,7 @@ class MongoService{
     if (!result) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -658,7 +658,7 @@ class MongoService{
       { entity_id: entityId, seq_name: seqName, seq_prefix: seqPrefix },
       { $inc: { seq_value: 1 }, is_current: true },
       { returnOriginal: false, upsert: false },
-      true
+      true,
     );
 
     if (!sequence) {
@@ -678,7 +678,7 @@ class MongoService{
           entity_id : entityId,
           _id       : { $ne: sequence._id },
         },
-        { is_current: false }
+        { is_current: false },
       );
     }
 
@@ -705,13 +705,13 @@ class MongoService{
     const updatedObjectInstance = await model.findOneAndUpdate(
       query,
       updateObject,
-      options
+      options,
     );
 
     if (!updatedObjectInstance && !noErr) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} ${modelName} item could not be updated`
+        `${this.name} ${modelName} item could not be updated`,
       );
       throw err;
     }
@@ -732,7 +732,7 @@ class MongoService{
     modelName,
     query,
     { projections = null, sortOption = {}, populate = null },
-    err = false
+    err = false,
   ) {
     // initialise model
     const model = this.getModelInstance(modelName);
@@ -745,7 +745,7 @@ class MongoService{
     if (!result && err) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} No ${modelName} items found`
+        `${this.name} No ${modelName} items found`,
       );
       throw err;
     }
@@ -770,12 +770,12 @@ class MongoService{
     query,
     { projections = null, sortOption = {}, populate = null },
     page = 1,
-    limit = 10
+    limit = 10,
   ) {
     if (page <= 0 || limit <= 0) {
       const err = this.errs(
         this.httpStatus.NOT_FOUND,
-        `${this.name} Page or Limit cannot be 0 or negative`
+        `${this.name} Page or Limit cannot be 0 or negative`,
       );
       throw err;
     }
@@ -825,7 +825,9 @@ class MongoService{
 
       return doc;
     }
-    if (!newObject) {newObject = query;}
+    if (!newObject) {
+      newObject = query;
+    }
 
     const newDoc = await this.create(modelName, newObject, skipUId);
 

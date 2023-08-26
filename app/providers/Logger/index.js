@@ -1,3 +1,3 @@
-const Logger = require('./LogProvider.js');
+const Logger = require('./log-provider');
 
 module.exports = Logger;

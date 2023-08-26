@@ -20,20 +20,21 @@ const getBcryptHash = async str => {
   return hash;
 };
 
-const verifyJWT = async token => new Promise((resolve, reject) => {
-  jwt.verify(token, JWT_SECRET, (err, decodedData) => {
-    if (err) {
-      reject(err);
-    }
+const verifyJWT = async token =>
+  new Promise((resolve, reject) => {
+    jwt.verify(token, JWT_SECRET, (err, decodedData) => {
+      if (err) {
+        reject(err);
+      }
 
-    resolve(decodedData);
+      resolve(decodedData);
+    });
   });
-});
 
 const signToken = async (data, expireMS = 0) => {
   const expireTime = !expireMS ? Number(JWT_EXPIRY) : expireMS;
   const opts = {
-    expiresIn : `${expireTime}`
+    expiresIn : `${expireTime}`,
   };
 
   return new Promise((resolve, reject) => {

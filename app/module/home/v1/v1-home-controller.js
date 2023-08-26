@@ -1,6 +1,6 @@
-const BaseController = require('../../../base/base_controller');
+const BaseController = require('../../../base/base-controller');
 
-class HomeControllerV1 extends BaseController{
+class HomeControllerV1 extends BaseController {
   constructor(opts) {
     super(opts, 'HomeControllerV1', 'homeServiceV1');
   }

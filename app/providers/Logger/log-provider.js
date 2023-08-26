@@ -2,67 +2,72 @@
 
 const pino = require('pino');
 const httpContext = require('express-http-context');
-const { REQUEST_ID_KEY, REQUEST_PATH_KEY, REQUEST_METHOD_KEY, SESSION_ID_KEY } = require('../../base/constants');
+const {
+  REQUEST_ID_KEY,
+  REQUEST_PATH_KEY,
+  REQUEST_METHOD_KEY,
+  SESSION_ID_KEY,
+} = require('../../base/constants');
 
-class Logger{
+class Logger {
   constructor() {
     const options = {
-      singleLine : true,
-      mkdir      : true,
-      hideObject : false,
+      singleLine: true,
+      mkdir: true,
+      hideObject: false,
     };
     const targets = [
       {
-        level   : 'info',
-        target  : 'pino/file',
-        options : {
+        level: 'info',
+        target: 'pino/file',
+        options: {
           ...options,
-          destination : 'logs/info.log',
+          destination: 'logs/info.log',
         },
       },
       {
-        level   : 'debug',
-        target  : 'pino/file',
-        options : {
+        level: 'debug',
+        target: 'pino/file',
+        options: {
           ...options,
-          destination : 'logs/debug.log',
+          destination: 'logs/debug.log',
         },
       },
       {
-        level   : 'warn',
-        target  : 'pino/file',
-        options : {
+        level: 'warn',
+        target: 'pino/file',
+        options: {
           ...options,
-          destination : 'logs/warn.log',
+          destination: 'logs/warn.log',
         },
       },
       {
-        level   : 'error',
-        target  : 'pino/file',
-        options : {
+        level: 'error',
+        target: 'pino/file',
+        options: {
           ...options,
-          destination : 'logs/error.log',
+          destination: 'logs/error.log',
         },
       },
     ];
 
     if (process.env.ENABLE_CONSOLE_OUTPUT) {
       targets.push({
-        target  : 'pino-pretty',
-        options : {
-          colorize     : true,
-          timestampKey : 'time',
-          singleLine   : true,
-          hideObject   : false,
-          ignore       : 'hostname,session_id,request_path',
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          timestampKey: 'time',
+          singleLine: true,
+          hideObject: false,
+          ignore: 'hostname,session_id,request_path',
         },
       });
     }
 
     this.logger = pino(
       {
-        level : process.env.LOG_LEVEL || 'info',
-        hooks : {
+        level: 'info',
+        hooks: {
           logMethod(inputArgs, method) {
             if (inputArgs.length >= 2) {
               const arg1 = inputArgs.shift();
@@ -74,8 +79,8 @@ class Logger{
             return method.apply(this, inputArgs);
           },
         },
-        formatters : {
-          log : obj => {
+        formatters: {
+          log: (obj) => {
             const newObj = Object.assign({}, obj);
             newObj[REQUEST_ID_KEY] = httpContext.get(REQUEST_ID_KEY);
             newObj[SESSION_ID_KEY] = httpContext.get(SESSION_ID_KEY);
