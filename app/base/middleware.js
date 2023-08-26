@@ -9,6 +9,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 
 const serviceLocator = require('../helpers/service-locator');
+const { Auth } = require("./auth_middleware");
 const uniqueReqId = serviceLocator.get('uniqueReqId');
 
 // Allowed API Versions
@@ -23,17 +24,6 @@ const allowedOrigins = [
 module.exports = function(app) {
   app.use(httpContext.middleware);
   app.use(cookieParser());
-  app.use(useragent.express());
-  app.use(uniqueReqId);
-  app.use(errors());
-  app.disable('x-powered-by');
-
-  app.use(express.urlencoded({ extended: false }));
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
-
-  app.use(compression());
-
   app.use(cors({
     origin(origin, callback) {
       if(!origin) {return callback(null, true);}
@@ -48,6 +38,15 @@ module.exports = function(app) {
     methods : ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
   }));
 
+  app.use(useragent.express());
+  app.use(uniqueReqId);
+  app.use(errors());
+  app.disable('x-powered-by');
+  app.use(express.urlencoded({ extended: false }));
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
+  app.use(compression());
+  app.use(Auth)
 
   app.use((req, res, next) => {
     const version = (req.originalUrl).split('/')[1];

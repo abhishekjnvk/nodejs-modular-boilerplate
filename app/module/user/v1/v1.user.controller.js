@@ -5,16 +5,16 @@ class UserControllerV1 extends BaseController{
     super(opts, 'UserControllerV1', 'userServiceV1');
   }
 
-  async signup(req, res, next) {
+  async register(req, res, next) {
     try {
       const { body }=req
-      this.logger.info(`${this.name} signup called`);
-      const response = await this.service.signup(body);
+      this.logger.info(`${this.name} register called`);
+      const response = await this.service.register(body);
       res.send(response);
       res.end();
-      this.logger.info(`${this.name} signup successful`);
+      this.logger.info(`${this.name} register successful`);
     } catch (err) {
-      this.logger.error(`${this.name} signup error: ${err}`);
+      this.logger.error(`${this.name} register error: ${err}`);
       next(err);
     }
   }

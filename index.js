@@ -6,7 +6,7 @@ const logger = serviceLocator.get('logger')
 const event = serviceLocator.get('event')
 const PORT= process.env.PORT || 8080
 const Database = require('./config/database');
-const config = require('./config/app-config');
+const config = serviceLocator.get('config')
 const router = express.Router();
 
 require('./app/base/events');

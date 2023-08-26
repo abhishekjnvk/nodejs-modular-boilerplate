@@ -17,7 +17,7 @@ class UserServiceV1 extends BaseService{
     };
   }
 
-  async signup(body) {
+  async register(body) {
     const _ = this;
     const { email, password, name } = body;
     const prevUser = await _.__getOne({ email }, true);

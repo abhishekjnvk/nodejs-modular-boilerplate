@@ -3,9 +3,9 @@ const { validateCreateUser, validateLogin } = require("./validator/user.validato
 module.exports.routes = (router, serviceLocator) => {
   const userControllerV1 = serviceLocator.get('userControllerV1');
 
-  router.post('/signup',  validateCreateUser, (req, res, next) => {
-    serviceLocator.get('logger').info('user signup Router v1');
-    userControllerV1.signup(req, res, next);
+  router.post('/register',  validateCreateUser, (req, res, next) => {
+    serviceLocator.get('logger').info('user register Router v1');
+    userControllerV1.register(req, res, next);
   })
 
   router.post('/login', validateLogin, (req, res, next) => {

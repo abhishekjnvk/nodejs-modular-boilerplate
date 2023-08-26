@@ -1,4 +1,4 @@
-module.exports = {
+const appConfig={
   APP_NAME    : process.env.APP_NAME || 'My App',
   APP_VERSION : process.env.APP_VERSION || '1.0.0',
   APP_EMAIL   : process.env.APP_EMAIL || 'bot@sample_app.com',
@@ -31,4 +31,15 @@ module.exports = {
     replSet : process.env.DB_REPL_SET || '',
     hostArr : process.env.DB_HOST_ARR,
   },
+  mail : {
+    enabled  : Boolean(process.env.MAIL_HOST) && Boolean(process.env.MAIL_USER) && Boolean(process.env.MAIL_PASS),
+    host     : process.env.MAIL_HOST,
+    port     : Number(process.env.MAIL_PORT) || 587,
+    username : process.env.MAIL_USER,
+    password : process.env.MAIL_PASS,
+    ssl      : process.env.MAIL_SSL == "true" || false
+  }
 };
+
+
+module.exports = appConfig

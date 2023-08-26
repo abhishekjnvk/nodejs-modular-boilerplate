@@ -71,12 +71,17 @@ ServiceLocator.prototype.register = function () {
       express : asValue(require('express')),
     })
     .register({
+      expressJwt : asValue(require('express-jwt')),
+    })
+    .register({
+      nodemailer : asValue(require('nodemailer')),
+    })
+    .register({
       glob : asValue(require('glob')),
     })
     .register({
       config : asValue(require('../../config')),
     })
-
     // Load Providers
     .loadModules([path.join(__dirname, '../providers/*/index.js')], {
       formatName      : (_, descriptor) => camelCase(descriptor.value.name),

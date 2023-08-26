@@ -13,6 +13,10 @@ const HomeSchema = new mongoose.Schema(
       unique   : true,
       required : true
     },
+    email_verified : {
+      type    : Boolean,
+      default : false,
+    },
     password : {
       type     : String,
       required : true

@@ -10,7 +10,6 @@ class Logger{
       singleLine : true,
       mkdir      : true,
       hideObject : false,
-      ignore     : 'hostname',
     };
     const targets = [
       {
@@ -55,7 +54,7 @@ class Logger{
           timestampKey : 'time',
           singleLine   : true,
           hideObject   : false,
-          ignore       : 'hostname',
+          ignore       : 'hostname,session_id,request_path',
         },
       });
     }
