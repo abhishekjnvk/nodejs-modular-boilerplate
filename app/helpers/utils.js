@@ -35,7 +35,7 @@ const verifyJWT = async token => {
 const signToken = async (data, expireMS = 0) => {
   const expireTime = !expireMS ? Number(JWT_EXPIRY) : expireMS;
   const opts = {
-    expiresIn : `${expireTime}`,
+    expiresIn : `${expireTime}`
   };
 
   return new Promise((resolve, reject) => {

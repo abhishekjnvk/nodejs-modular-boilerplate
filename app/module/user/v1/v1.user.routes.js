@@ -13,4 +13,9 @@ module.exports.routes = (router, serviceLocator) => {
     userControllerV1.login(req, res, next);
   })
 
+  router.get('/me', (req, res, next) => {
+    serviceLocator.get('logger').info('user myProfile Router v1');
+    userControllerV1.myProfile(req, res, next);
+  })
+
 }

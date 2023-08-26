@@ -10,10 +10,11 @@ class UserServiceV1 extends BaseService{
     _.logger.info('Normalizing data');
 
     return {
-      _id     : data._id,
-      user_id : data._id,
-      email   : data.email,
-      name    : data.name,
+      _id            : data._id,
+      user_id        : data._id,
+      email          : data.email,
+      email_verified : data.email_verified,
+      name           : data.name,
     };
   }
 
@@ -67,6 +68,20 @@ class UserServiceV1 extends BaseService{
     const token = await _.utils.signToken(userData);
 
     return _.parseResponseData(userData, token);
+  }
+
+
+  async myProfile(user) {
+    const _ = this;
+    const { _id: userId } = user;
+    let userData = await _.__get(userId);
+    userData = _.normalizeData(userData);
+
+    const result={
+      user : userData
+    }
+
+    return _.parseResponseData(result);
   }
 }
 

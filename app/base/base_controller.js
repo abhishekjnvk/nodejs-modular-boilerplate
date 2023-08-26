@@ -5,6 +5,7 @@ class BaseController{
     this.logger = opts.logger;
     this.config = opts.config;
     this.utils = opts.utils;
+    this.constants = opts.constants;
     this.service = opts[serviceName];
     this.name = name;
   }
@@ -141,13 +142,40 @@ class BaseController{
       const { id } = req.params;
       const { opts } = req;
       const result = await _.service.softDelete(id, opts);
-
       res.send(result);
     } catch (err) {
       _.logger.error(err.message);
       next(err);
     }
   }
+
+  setCookie(cookieObject={}, res, maxAge=86400000) {
+    const _ = this;
+    _.logger.info(`${_.name} setCookie() called`);
+    try {
+      for (const key in cookieObject) {
+        if (Object.hasOwnProperty.call(cookieObject, key)) {
+          const value = cookieObject[key];
+          if(value) {
+            res.cookie(key, value, { maxAge });
+          }
+        }
+      }
+      _.logger.info(`${_.name} setCookie() success`);
+    } catch (err) {
+      _.logger.error(err.message);
+    }
+  }
+
+  setTokenInCookie(data, res) {
+    const authToken = data[this.constants.AUTH_TOKEN_KEY];
+
+    if(authToken) {
+      const cookieObj = { [this.constants.AUTH_TOKEN_KEY]: authToken };
+      this.setCookie(cookieObj, res);
+    }
+  }
+
 }
 
 module.exports = BaseController;

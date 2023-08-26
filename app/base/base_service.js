@@ -12,17 +12,17 @@ class BaseService{
     this.constants = opts.constants;
   }
 
-  async parseResponseData(data = {}, token = '') {
+  async parseResponseData(data = {}, authToken) {
 
     const reqId = this.httpContext.get(this.constants.REQUEST_ID_KEY);
     const sessionId = this.httpContext.get(this.constants.SESSION_ID_KEY);
 
     const result = {
-      status     : true,
+      status                          : true,
       data,
-      token,
-      request_id : reqId,
-      session_id : sessionId
+      [this.constants.AUTH_TOKEN_KEY] : authToken,
+      request_id                      : reqId,
+      session_id                      : sessionId
     };
     this.logger.info("parsed response data")
 
