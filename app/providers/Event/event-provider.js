@@ -19,12 +19,12 @@ const proxyHandler = {
  * @class Event
  * @singleton
  */
-class Event {
+class Event{
   constructor() {
     this.emitter = new EventEmitter({
-      wildcard: true,
-      delimiter: '::',
-      newListener: false,
+      wildcard    : true,
+      delimiter   : '::',
+      newListener : false,
     });
 
     this._namespacedListeners = {};
@@ -246,7 +246,7 @@ class Event {
     const times = this._many;
     this._many = null;
 
-    _.each(_.castArray(listeners), (listener) => {
+    _.each(_.castArray(listeners), listener => {
       if (times > 0) {
         this.emitter.many(event, times, this._resolveListener(listener));
       } else {
@@ -272,7 +272,7 @@ class Event {
    * ```
    */
   onAny(listeners) {
-    _.each(_.castArray(listeners), (listener) => {
+    _.each(_.castArray(listeners), listener => {
       this.emitter.onAny(this._resolveListener(listener));
     });
   }
@@ -308,7 +308,7 @@ class Event {
    * ```
    */
   once(event, listeners) {
-    _.each(_.castArray(listeners), (listener) => {
+    _.each(_.castArray(listeners), listener => {
       this.emitter.once(event, this._resolveListener(listener));
     });
   }
@@ -351,7 +351,7 @@ class Event {
    * ```
    */
   offAny(listeners) {
-    _.each(_.castArray(listeners), (listener) => {
+    _.each(_.castArray(listeners), listener => {
       listener =
         typeof listener === 'string'
           ? this._namespacedListeners[listener]
@@ -372,7 +372,7 @@ class Event {
    * @return {void}
    */
   removeListener(event, listeners) {
-    _.each(_.castArray(listeners), (listener) => {
+    _.each(_.castArray(listeners), listener => {
       listener =
         typeof listener === 'string'
           ? this._namespacedListeners[listener]

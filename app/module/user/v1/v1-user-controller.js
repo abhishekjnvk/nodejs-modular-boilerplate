@@ -1,6 +1,6 @@
 const BaseController = require('../../../base/base-controller');
 
-class UserControllerV1 extends BaseController {
+class UserControllerV1 extends BaseController{
   constructor(opts) {
     super(opts, 'UserControllerV1', 'userServiceV1');
   }

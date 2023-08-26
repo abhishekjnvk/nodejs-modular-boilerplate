@@ -6,7 +6,7 @@ const logger = serviceLocator.get('logger');
 const path = require('path');
 const models = listModules(path.join(__dirname, '../app/module/*/*model.js'));
 
-class Database {
+class Database{
   constructor() {
     this.mongoose = serviceLocator.get('mongoose');
   }
@@ -32,7 +32,7 @@ class Database {
         return resolve();
       });
 
-      connection.on('error', (err) => {
+      connection.on('error', err => {
         logger.info(`Database Connection Failed${err}`);
 
         return reject(err);
@@ -52,7 +52,7 @@ class Database {
         process.exit(0);
       });
 
-      models.forEach((model) => {
+      models.forEach(model => {
         // eslint-disable-next-line security/detect-non-literal-require
         require(model.path);
       });

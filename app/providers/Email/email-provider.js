@@ -1,15 +1,15 @@
-class EmailProvider {
+class EmailProvider{
   constructor(opts) {
     this.logger = opts.logger;
 
     if (opts.config.mail.enabled) {
       this.transporter = opts.nodemailer.createTransport({
-        host: opts.config.mail.host,
-        port: opts.config.mail.port,
-        secure: opts.config.mail.ssl,
-        auth: {
-          user: opts.config.mail.username,
-          pass: opts.config.mail.password,
+        host   : opts.config.mail.host,
+        port   : opts.config.mail.port,
+        secure : opts.config.mail.ssl,
+        auth   : {
+          user : opts.config.mail.username,
+          pass : opts.config.mail.password,
         },
       });
     } else {
@@ -21,11 +21,11 @@ class EmailProvider {
 
   sendHtmlEmail(to, subject, htmlContent, textContent) {
     const mailOptions = {
-      from: this.transporter.options.auth.user,
+      from : this.transporter.options.auth.user,
       to,
       subject,
-      html: htmlContent,
-      text: textContent,
+      html : htmlContent,
+      text : textContent,
     };
 
     return new Promise((resolve, reject) => {
