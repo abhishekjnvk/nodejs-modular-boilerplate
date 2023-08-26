@@ -12,6 +12,7 @@ class MongoService{
     this.uIdGen = opts.uniqueIdGenerator;
     this.mongoose = opts.mongoose;
     this.httpStatus = opts.httpStatus;
+    this.errs = opts.httpErrors;
     this.name = 'Mongo Service:';
     this.log = opts.logger;
     this.modelNameToIdPrefix = {
