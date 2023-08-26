@@ -11,6 +11,7 @@ class MongoService{
   constructor(opts) {
     this.uIdGen = opts.uniqueIdGenerator;
     this.mongoose = opts.mongoose;
+    this.httpStatus = opts.httpStatus;
     this.name = 'Mongo Service:';
     this.log = opts.logger;
     this.modelNameToIdPrefix = {

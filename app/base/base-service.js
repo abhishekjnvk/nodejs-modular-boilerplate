@@ -88,7 +88,7 @@ class BaseService{
     const result = await _.databaseService.getById(_.modelName, id);
 
     if (!result) {
-      const err = _.errs(
+      const err = _.httpErrors(
         this.httpStatus.NOT_FOUND,
         `${_.modelName} with id: ${id} does not exists`,
       );
@@ -151,7 +151,7 @@ class BaseService{
     const result = await _.databaseService.delete(_.modelName, id);
 
     if (!result) {
-      const err = _.errs(
+      const err = _.httpErrors(
         this.httpStatus.NOT_FOUND,
         `${_.modelName} with id: ${id} could not be deleted`,
       );
