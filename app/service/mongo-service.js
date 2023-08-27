@@ -781,7 +781,7 @@ class MongoService{
       );
       throw err;
     }
-    const skip = (page - 1) * limit;
+    const skip = Math.max(0, (page - 1) * limit);
     // initialise model
     const model = this.getModelInstance(modelName);
     const docs = await model
